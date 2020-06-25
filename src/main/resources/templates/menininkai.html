@@ -3,7 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<title> Menas - menininkai </title>
-	<style>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<style>
 		h3 {
 	 		text-align:center;
 		}
@@ -58,6 +60,53 @@
 			border-radius: 7px;	
 		}
 	</style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+   $( function() {
+   
+	   var avail_menininkai;
+	   
+	   alert( 'pries' );
+	   
+		$.ajax({
+		
+			url: "http://localhost:8080/ajax/lst-menininkai"
+							
+		}).done( 
+		
+			function ( data_menininkai ) {
+			
+				avail_menininkai = data_menininkai;
+			}
+		);	   
+	   
+	   alert ( 'po: ' + avail_menininkai.length );
+	   
+	   $( "#project" ).autocomplete({
+	   
+	      minLength: 0,
+	      source: avail_menininkai,
+	      focus: function( event, ui ) {
+	        $( "#menininkas" ).val( ui.item.pav );
+	        return false;
+	      },
+	      select: function( event, ui ) {
+	      
+	        $( "#menininkas" ).val( ui.item.pav );
+	        $( "#id_menininko" ).val( ui.item.id );
+	
+	        return false;
+	      }
+	    })
+	    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+	    
+	      return $( "<li>" )
+	        .append( "<div>" + item.pav + "</div>" )
+	        .appendTo( ul );
+	    };
+  });
+  </script>
 </head>
 <body>
 	<nav>
@@ -66,8 +115,9 @@
 
 	<h3> Menininkai </h3>
 	<form method="post" action="">
-		<label for="pav">Menininkas</label>
-		<input type="text" name="pav">
+		<label for="menininkas">Menininkas</label>
+		<input type="text" id="menininkas">
+		<input type="hidden" id="id_menininko">		
 		<label for="metai_gimimo">Metai gimimo</label>
 		<input type="number" name="metai_gimimo">
 		<label for="tautybe">Tautybė</label>		
