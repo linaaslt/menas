@@ -12,17 +12,18 @@ public class Laikytojai {
 	    @GeneratedValue(strategy=GenerationType.IDENTITY)
 
 	 private int id;
-	 private String kryptis_meno;
-	 private String miestas;
 	 private String pav;
 	 private String valstybe;
-	 
-	 public Laikytojai (String pav, String miestas, String kryptis_meno, String valstybe) {
+	 private String kryptis_meno;
+	 private String miestas;
+	 	 
+	 public Laikytojai (String pav,String valstybe, String kryptis_meno, String miestas ) {
 		 super();
 		 this.pav = pav;
-		 this.miestas = miestas;
-		 this.kryptis_meno = kryptis_meno;
 		 this.valstybe = valstybe;
+		 this.kryptis_meno = kryptis_meno;
+		 this.miestas = miestas;
+		 
 	 }
 
 	 @Override

@@ -1,9 +1,12 @@
 package ernadas.mokymai.menas;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Kuriniai {
@@ -12,29 +15,43 @@ public class Kuriniai {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 
 	private Integer id;
+	private String pav;	
+	private String technika;
+	private String rusis;
+	private Integer metai_sukurimo;
 	private Integer kaina;
 	private Integer id_menininkai;
-	private Integer metai_sukurimo;
 	private Integer id_laikytojai;
-	private String rusis;
-	private String pav;
-	private String technika;
 	
-	public Kuriniai (String rusis, Integer kaina, Integer id_menininkai, Integer metai_sukurimo, Integer id_laikytojai, String pav, String technika ) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(insertable=false, updatable=false,name="id_menininkai")
+	private Menininkai menininkai;	
+	
+	
+	public Kuriniai ( String pav, String technika, String rusis,  Integer metai_sukurimo, Integer kaina, Integer id_laikytojai, Integer id_menininkai) {
 		super();
-		this.rusis = rusis;
-		this.kaina = kaina;
-		this.id_menininkai = id_menininkai;
-		this.metai_sukurimo = metai_sukurimo;
-		this.id_laikytojai = id_laikytojai;
+		
 		this.pav = pav;
 		this.technika = technika;
-		
+		this.rusis = rusis;
+		this.metai_sukurimo = metai_sukurimo;
+		this.kaina = kaina;
+		this.id_laikytojai = id_laikytojai;
+		this.id_menininkai = id_menininkai;
 	}
 	
 	public Kuriniai () {
 		super();
 	}
+	
+	public Menininkai getMenininkai() {
+		return menininkai;
+	}
+
+	public void setMenininkai(Menininkai menininkai) {
+		this.menininkai = menininkai;
+	}	
+	
 	
 	public Integer getKaina() {
 		return kaina;

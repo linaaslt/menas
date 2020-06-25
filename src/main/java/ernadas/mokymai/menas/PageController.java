@@ -45,16 +45,16 @@ public class PageController {
 	 @RequestMapping("/laikytojai")
 	    public String laikytojai(
 	    		@RequestParam(required=false) String pav
-	    		, @RequestParam(required=false) String miestas
-	    		, @RequestParam(required=false) String kryptis_meno
 	    		, @RequestParam(required=false) String valstybe
+	    		, @RequestParam(required=false) String kryptis_meno
+	    		, @RequestParam(required=false) String miestas
 	    		, @RequestParam(required=false) String irasas
 	    		, Model model 
 	    	) {
 		 
 			 if ( irasas != null ) { 	
 			 		
-			 		Laikytojai laikytojas = new Laikytojai( pav, miestas, kryptis_meno, valstybe );
+			 		Laikytojai laikytojas = new Laikytojai( pav, valstybe, kryptis_meno, miestas );
 			 		System.out.println ( pav + " " + miestas + " " + kryptis_meno + " " + valstybe );
 			 		System.out.println( laikytojas.toString() );
 			 		
@@ -73,26 +73,28 @@ public class PageController {
 	 @RequestMapping("/kuriniai")
 	    public String kuriniai(
 	    		@RequestParam(required=false) String pav
+	    		, @RequestParam(required=false) String technika	
+	    		, @RequestParam(required=false) String rusis	    		
 	    		, @RequestParam(required=false) String metai_sukurimo
-	    		, @RequestParam(required=false) String technika
 	    		, @RequestParam(required=false) String kaina
 	    		, @RequestParam(required=false) String id_laikytojai
+	    		, @RequestParam(required=false) String id_menininko
 	    		, @RequestParam(required=false) String irasas
 	    		, Model model 
 	    	) {
-		/*
+		 
+		
 			 if ( irasas != null ) {
 			 		
-			 		Kuriniai kurinys = new Kuriniai( pav,, technika, kaina, id_laikytojai );
-			 	
-			 		
+			 		Kuriniai kurinys = new Kuriniai ( pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
+			 		 		
 			 		if ( irasas.equals ( "papildyti" ) ) {
 			 			
 			 			kuriniai_repository.save( kurinys );
 			 		}
 			 		
 			 	}
-		 */
+		 
 		 	model.addAttribute("kuriniai", kuriniai_repository.findAll() );
 	        model.addAttribute("lst_menu", Menu.values() );  
 	        return "kuriniai";

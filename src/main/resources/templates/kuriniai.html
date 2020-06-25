@@ -65,29 +65,88 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    function log( message ) {
-      $( "<div>" ).text( message ).prependTo( "#log" );
-      $( "#log" ).scrollTop( 0 );
-    }
- 
-    $( "#birds" ).autocomplete({
-      source: function( request, response ) {
-        $.ajax( {
-          url: "search.php",
-          dataType: "jsonp",
-          data: {
-            term: request.term
-          },
-          success: function( data ) {
-            response( data );
-          }
-        } );
-      },
-      minLength: 2,
-      select: function( event, ui ) {
-        log( "Selected: " + ui.item.value + " aka " + ui.item.id );
-      }
-    } );
+  
+	   var avail_menininkai;
+	   
+	   alert( 'pries' );
+	   
+		$.ajax({
+		
+			url: "http://localhost:8080/ajax/lst-menininkai"
+							
+		}).done( 
+		
+			function ( data_menininkai ) {
+			
+				avail_menininkai = data_menininkai;
+				
+				  alert ( 'po: ' + JSON.stringify ( avail_menininkai ) );
+				
+				   $( "#menininkas" ).autocomplete({
+				   
+				      minLength: 0,
+				      source: avail_menininkai,
+				      focus: function( event, ui ) {
+				        $( "#menininkas" ).val( ui.item.pav );
+				        return false;
+				      },
+				      select: function( event, ui ) {
+				      
+				        $( "#menininkas" ).val( ui.item.pav );
+				        $( "#id_menininko" ).val( ui.item.id );
+				
+				        return false;
+				      }
+				    }) 
+				    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+				    
+				      return $( "<li>" )
+				        .append( "<div>" + item.pav + "</div>" )
+				        .appendTo( ul );
+				    };				
+			}
+		);	   
+	   
+		var avail_laikytojai;	   
+	   
+		$.ajax({
+	
+			url: "http://localhost:8080/ajax/lst-laikytojai"
+							
+		}).done( 
+		
+			function ( data_laikytojai ) {
+			
+				avail_laikytojai = data_laikytojai;
+				
+				  alert ( 'po: ' + JSON.stringify ( avail_laikytojai ) );
+				
+				   $( "#laikytojas" ).autocomplete({
+				   
+				      minLength: 0,
+				      source: avail_laikytojai,
+				      focus: function( event, ui ) {
+				        $( "#laikytojas" ).val( ui.item.pav );
+				        return false;
+				      },
+				      select: function( event, ui ) {
+				      
+				        $( "#laikytojas" ).val( ui.item.pav );
+				        $( "#id_laikytojai" ).val( ui.item.id );
+				
+				        return false;
+				      }
+				    }) 
+				    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+				    
+				      return $( "<li>" )
+				        .append( "<div>" + item.pav + "</div>" )
+				        .appendTo( ul );
+				    };				
+			}
+		);
+	   
+
   } );
   </script>
 <body>
@@ -97,6 +156,9 @@
 
 	<h3> Kūrniniai </h3>
 	<form method="post" action="">
+		<label for="laikytojas">Laikytojas</label>
+		<input type="text" name="laikytojas" id="laikytojas">
+		<input type="hidden" name="id_laikytojai" id="id_laikytojai">
 		<label for="pav">Pavadinimas</label>
 		<input type="text" name="pav">
 		<label for="miestas">Rusis</label>
@@ -108,19 +170,25 @@
 		<input type="text" name="technika">
 		<label for="menininkas">Menininkas</label>
 		<input type="text" id="menininkas">
-		<input type="hidden" id="id_menininko">	
+		<input type="hidden" name="id_menininko" id="id_menininko">	
 		<label for="kaina">Kaina</label>		
-		<input type="text" name="kaina">				
+		<input type="text" name="kaina">
+		<label for="metai_sukurimo">Metai sukūrimo</label>		
+		<input type="text" name="metai_sukurimo">				
 		<input type="submit" name="irasas" value="papildyti">
 	</form>
 	<table>
 		<tr>	
+			<th>Laikytojas</th>
+			<th>Menininkas</th>
 			<th>Pavadinimas</th>
 			<th>Rusis</th> 
 			<th>Technika</th>
 			<th>Kaina</th>			
 		</tr>
 		<tr th:each="kurinys : ${kuriniai}">
+			<td></td>
+			<td th:text="${kurinys.getMenininkai()} ? ${kurinys.getMenininkai().getPav()} : '' "></td>
 			<td th:text="${kurinys.getPav()}"></td>	
 			<td th:text="${kurinys.getRusis()}"></td>
 			<td th:text="${kurinys.getTechnika()}"></td>	
