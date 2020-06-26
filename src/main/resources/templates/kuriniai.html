@@ -68,7 +68,7 @@
   
 	   var avail_menininkai;
 	   
-	   alert( 'pries' );
+	//   alert( 'pries' );
 	   
 		$.ajax({
 		
@@ -80,7 +80,7 @@
 			
 				avail_menininkai = data_menininkai;
 				
-				  alert ( 'po: ' + JSON.stringify ( avail_menininkai ) );
+				 // alert ( 'po: ' + JSON.stringify ( avail_menininkai ) );
 				
 				   $( "#menininkas" ).autocomplete({
 				   
@@ -119,7 +119,7 @@
 			
 				avail_laikytojai = data_laikytojai;
 				
-				  alert ( 'po: ' + JSON.stringify ( avail_laikytojai ) );
+				 // alert ( 'po: ' + JSON.stringify ( avail_laikytojai ) );
 				
 				   $( "#laikytojas" ).autocomplete({
 				   
@@ -145,9 +145,110 @@
 				    };				
 			}
 		);
+		
+		var dialog, form,
+	 
+	      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+	      laikytojas = $( "#laikytojas" ),
+	      pav = $( "#pav" ),
+	      rusis = $( "#rusis" ),
+	      technika = $( "#technika" ),
+	      menininkas =$("#menininkas")
+	      kaina =$("#kaina")
+	      metai_sukurimo =$("#metai_sukurimo")
+	      allFields = $( [] ).add( laikytojas ).add( pav ).add( rusis ).add( technika ).add( menininkas ).add( kaina ).add( metai_sukurimo ),
+	      tips = $( ".validateTips" );
+	 
+	    function updateTips( t ) {
+	      tips
+	        .text( t )
+	        .addClass( "ui-state-highlight" );
+	      setTimeout(function() {
+	        tips.removeClass( "ui-state-highlight", 1500 );
+	      }, 500 );
+	    }
+	 
+	    function checkLength( o, n, min, max ) {
+	      if ( o.val().length > max || o.val().length < min ) {
+	        o.addClass( "ui-state-error" );
+	        updateTips( "Length of " + n + " must be between " +
+	          min + " and " + max + "." );
+	        return false;
+	      } else {
+	        return true;
+	      }
+	    }
+	 
+	    function checkRegexp( o, regexp, n ) {
+	      if ( !( regexp.test( o.val() ) ) ) {
+	        o.addClass( "ui-state-error" );
+	        updateTips( n );
+	        return false;
+	      } else {
+	        return true;
+	      }
+	    }
+	 
+	    function addKurinys() {
+	      var valid = true;
+	      allFields.removeClass( "ui-state-error" );
+	 /*
+		  valid = valid && checkLength( laikytojas, "laikytojas", 3, 64 );
+	      valid = valid && checkLength( pav, "pav", 3, 64 );
+	      valid = valid && checkLength( meno_kryptis, "kryptis_meno", 6, 32 );
+	      valid = valid && checkLength( miestas, "miestas", 4, 32 );
+	      valid = valid && checkLength( valstybe, "valstybe", 4, 32 );
+	 
+	      valid = valid && checkRegexp( pav, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ_\s])+$/i, "Pav turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
+	      valid = valid && checkRegexp( miestas, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Miestas turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
+	      valid = valid && checkRegexp( valstybe, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Valstybe turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
+	 */
+	  
+	      alert ( valid );      
+	      if ( valid ) {
+	      
 	   
-
-  } );
+	        dialog.dialog( "close" );
+	
+	      }
+	      return valid;
+	    }
+	 
+	    dialog = $( "#dialog-form" ).dialog({
+	    
+	      autoOpen: false,
+	      height: 400,
+	      width: 350,
+	      modal: true,
+	      buttons: {
+	        "Išsaugoti": function() {
+	        
+	        	if ( addKurinys() ) {
+	        	
+	        		alert ( $('#pav').val() );
+	        	
+	        		form.submit();
+	        	}
+	        },
+	        "Atšaukti": function() {
+	        
+	         form[ 0 ].reset();       
+	          dialog.dialog( "close" );
+	        }
+	      },
+	      close: function() {
+	
+	        allFields.removeClass( "ui-state-error" );
+	      }
+	    });
+	 
+	    form = dialog.find( "form" );
+	 
+	    $( "#naujas_irasas" ).button().on( "click", function() {
+	      dialog.dialog( "open" );
+	    });	   
+		   
+  });
   </script>
 <body>
 	<nav>
@@ -155,7 +256,10 @@
 	</nav>
 
 	<h3> Kūrniniai </h3>
-	<form method="post" action="">
+	<div style="width: 40%; margin 10px auto 10px auto">
+	<input type="button" id="naujas_irasas" value="papildyti">
+	<div id="dialog-form" class='ui-front' title="Kūrinys">
+	<form id="frm_kurinys" method="post" action="">
 		<label for="laikytojas">Laikytojas</label>
 		<input type="text" name="laikytojas" id="laikytojas">
 		<input type="hidden" name="id_laikytojai" id="id_laikytojai">
@@ -176,7 +280,10 @@
 		<label for="metai_sukurimo">Metai sukūrimo</label>		
 		<input type="text" name="metai_sukurimo">				
 		<input type="submit" name="irasas" value="papildyti">
+		
+		<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
 	</form>
+	</div>
 	<table>
 		<tr>	
 			<th>Laikytojas</th>
@@ -187,7 +294,7 @@
 			<th>Kaina</th>			
 		</tr>
 		<tr th:each="kurinys : ${kuriniai}">
-			<td></td>
+			<td th:text="${kurinys.getLaikytojai()} ? ${kurinys.getLaikytojai().getPav()} : 'x' "></td>
 			<td th:text="${kurinys.getMenininkai()} ? ${kurinys.getMenininkai().getPav()} : '' "></td>
 			<td th:text="${kurinys.getPav()}"></td>	
 			<td th:text="${kurinys.getRusis()}"></td>

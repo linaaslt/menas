@@ -25,7 +25,12 @@ public class Kuriniai {
 	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(insertable=false, updatable=false,name="id_menininkai")
-	private Menininkai menininkai;	
+	private Menininkai menininkai;
+    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(insertable=false, updatable=false,name="id_laikytojai")
+    private Laikytojai laikytojai;
 	
 	
 	public Kuriniai ( String pav, String technika, String rusis,  Integer metai_sukurimo, Integer kaina, Integer id_laikytojai, Integer id_menininkai) {
@@ -52,6 +57,13 @@ public class Kuriniai {
 		this.menininkai = menininkai;
 	}	
 	
+	public Laikytojai getLaikytojai() {
+		return laikytojai;
+	}
+
+	public void setLaikytojai(Laikytojai laikytojai) {
+		this.laikytojai = laikytojai;
+	}	
 	
 	public Integer getKaina() {
 		return kaina;

@@ -62,6 +62,108 @@
 	</style>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+$( function() {
+    var dialog, form,
+ 
+      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+      laikytojas = $( "#id_laikytojas" ),
+      pav = $( "#pav" ),
+      rusis = $( "#rusis" ),
+      technika = $( "#technika" ),
+      menininkas =$("#menininkas")
+      kaina =$("#kaina")
+      metai_sukurimo =$("#metai_sukurimo")
+      allFields = $( [] )add( id_laikytojas )..add( pav ).add( rusis ).add( technika ).add( menininkas ).add( kaina ).add( metai_sukurimo ),
+      tips = $( ".validateTips" );
+ 
+    function updateTips( t ) {
+      tips
+        .text( t )
+        .addClass( "ui-state-highlight" );
+      setTimeout(function() {
+        tips.removeClass( "ui-state-highlight", 1500 );
+      }, 500 );
+    }
+ 
+    function checkLength( o, n, min, max ) {
+      if ( o.val().length > max || o.val().length < min ) {
+        o.addClass( "ui-state-error" );
+        updateTips( "Length of " + n + " must be between " +
+          min + " and " + max + "." );
+        return false;
+      } else {
+        return true;
+      }
+    }
+ 
+    function checkRegexp( o, regexp, n ) {
+      if ( !( regexp.test( o.val() ) ) ) {
+        o.addClass( "ui-state-error" );
+        updateTips( n );
+        return false;
+      } else {
+        return true;
+      }
+    }
+ 
+    function addLaikytojas() {
+      var valid = true;
+      allFields.removeClass( "ui-state-error" );
+ 
+      valid = valid && checkLength( pav, "pav", 3, 64 );
+      valid = valid && checkLength( meno_kryptis, "kryptis_meno", 6, 32 );
+      valid = valid && checkLength( miestas, "miestas", 4, 32 );
+      valid = valid && checkLength( valstybe, "valstybe", 4, 32 );
+ 
+      valid = valid && checkRegexp( pav, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ_\s])+$/i, "Pav turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
+      valid = valid && checkRegexp( miestas, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Miestas turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
+      valid = valid && checkRegexp( valstybe, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Valstybe turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
+  
+      alert ( valid );      
+      if ( valid ) {
+      
+   
+        dialog.dialog( "close" );
+
+      }
+      return valid;
+    }
+ 
+    dialog = $( "#dialog-form" ).dialog({
+    
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Išsaugoti": function() {
+        
+        	if ( addLaikytojas() ) {
+        	
+        		alert ( $('#pav').val() );
+        	
+        		form.submit();
+        	}
+        },
+        "Atšaukti": function() {
+        
+         form[ 0 ].reset();       
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+
+        allFields.removeClass( "ui-state-error" );
+      }
+    });
+ 
+    form = dialog.find( "form" );
+ 
+    $( "#naujas_irasas" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+</script>
 </head>
 <body>
 	<nav>
