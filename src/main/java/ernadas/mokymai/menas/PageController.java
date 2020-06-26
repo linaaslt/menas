@@ -1,5 +1,7 @@
 package ernadas.mokymai.menas;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,9 @@ public class PageController {
 	private LaikytojaiRepository laikytojai_repository;
 	@Autowired
 	private KuriniaiRepository kuriniai_repository;
+	
+	@Autowired 
+	EntityManagerFactory  emf;		
 	
 	 @RequestMapping("/menininkai")
 	    public String menininkai(
@@ -69,6 +74,37 @@ public class PageController {
 	        model.addAttribute("lst_menu", Menu.values() );  
 	        return "laikytojai";
 	 }
+	 
+	 @RequestMapping("/menininkas")
+	    public String kuriniaiMenininko(
+	    		@RequestParam(required=false) Integer id
+	    		, @RequestParam(required=false) String pav
+	    		, @RequestParam(required=false) String technika	
+	    		, @RequestParam(required=false) String rusis	    		
+	    		, @RequestParam(required=false) String metai_sukurimo
+	    		, @RequestParam(required=false) String kaina
+	    		, @RequestParam(required=false) String id_laikytojai
+	    		, @RequestParam(required=false) String id_menininko
+	    		, @RequestParam(required=false) String irasas
+	    		, Model model 
+	    	) {
+		 
+		
+			 if ( irasas != null ) {
+			 		
+			 		Kuriniai kurinys = new Kuriniai ( pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
+			 		 		
+			 		if ( irasas.equals ( "papildyti" ) ) {
+			 			
+			 			kuriniai_repository.save( kurinys );
+			 		}
+			 		
+			 	}
+		 
+		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdMenininkai( id/*, emf */ ) );
+	        model.addAttribute("lst_menu", Menu.values() );  
+	        return "kuriniai";
+	 }	 
 	 
 	 @RequestMapping("/kuriniai")
 	    public String kuriniai(

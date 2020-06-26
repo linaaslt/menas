@@ -59,110 +59,50 @@
 			-moz-border-radius: 7px;
 			border-radius: 7px;	
 		}
+		input.tr1 {
+			display: inline-block;
+			width: 75px;
+			padding: 3px;
+			margin: 3px;			
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			border-radius: 3px;			
+		}
 	</style>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $( function() {
-    var dialog, form,
- 
-      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-      laikytojas = $( "#id_laikytojas" ),
-      pav = $( "#pav" ),
-      rusis = $( "#rusis" ),
-      technika = $( "#technika" ),
-      menininkas =$("#menininkas")
-      kaina =$("#kaina")
-      metai_sukurimo =$("#metai_sukurimo")
-      allFields = $( [] )add( id_laikytojas )..add( pav ).add( rusis ).add( technika ).add( menininkas ).add( kaina ).add( metai_sukurimo ),
-      tips = $( ".validateTips" );
- 
-    function updateTips( t ) {
-      tips
-        .text( t )
-        .addClass( "ui-state-highlight" );
-      setTimeout(function() {
-        tips.removeClass( "ui-state-highlight", 1500 );
-      }, 500 );
-    }
- 
-    function checkLength( o, n, min, max ) {
-      if ( o.val().length > max || o.val().length < min ) {
-        o.addClass( "ui-state-error" );
-        updateTips( "Length of " + n + " must be between " +
-          min + " and " + max + "." );
-        return false;
-      } else {
-        return true;
-      }
-    }
- 
-    function checkRegexp( o, regexp, n ) {
-      if ( !( regexp.test( o.val() ) ) ) {
-        o.addClass( "ui-state-error" );
-        updateTips( n );
-        return false;
-      } else {
-        return true;
-      }
-    }
- 
-    function addLaikytojas() {
-      var valid = true;
-      allFields.removeClass( "ui-state-error" );
- 
-      valid = valid && checkLength( pav, "pav", 3, 64 );
-      valid = valid && checkLength( meno_kryptis, "kryptis_meno", 6, 32 );
-      valid = valid && checkLength( miestas, "miestas", 4, 32 );
-      valid = valid && checkLength( valstybe, "valstybe", 4, 32 );
- 
-      valid = valid && checkRegexp( pav, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ_\s])+$/i, "Pav turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
-      valid = valid && checkRegexp( miestas, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Miestas turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
-      valid = valid && checkRegexp( valstybe, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Valstybe turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
-  
-      alert ( valid );      
-      if ( valid ) {
-      
-   
-        dialog.dialog( "close" );
-
-      }
-      return valid;
-    }
- 
-    dialog = $( "#dialog-form" ).dialog({
     
-      autoOpen: false,
-      height: 400,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Išsaugoti": function() {
-        
-        	if ( addLaikytojas() ) {
-        	
-        		alert ( $('#pav').val() );
-        	
-        		form.submit();
-        	}
-        },
-        "Atšaukti": function() {
-        
-         form[ 0 ].reset();       
-          dialog.dialog( "close" );
-        }
-      },
-      close: function() {
-
-        allFields.removeClass( "ui-state-error" );
-      }
+    $( '.edit' ).each( function () {
+    
+    	$( this ).click( function() {
+    
+	    	id= $( this ).parent().parent().data( 'idx' );
+	    	
+	    	alert ( id );
+	     
+	   		$.ajax({
+		
+				url: "http://localhost:8080/ajax/menininkas?id=" + id
+								
+			}).done( 
+			
+				function ( menininkas ) {
+				
+					console.log ( menininkas ); 
+				
+					$( '#id_men' ).val( menininkas.id  )		
+					$( '#pav' ).val( menininkas.pav )
+					$( '#metai_gimimo' ).val( menininkas.metaiGimimo )		
+					$( '#tautybe' ).val( menininkas.tautybe )	
+					$( '#apras' ).html ( menininkas.apras );				
+					$ ('#irasas' ).val ( 'pakeisti' ); 						
+				}
+			);
+		}); 
     });
- 
-    form = dialog.find( "form" );
- 
-    $( "#naujas_irasas" ).button().on( "click", function() {
-      dialog.dialog( "open" );
-    });
+});
 </script>
 </head>
 <body>
@@ -173,23 +113,30 @@ $( function() {
 	<h3> Menininkai </h3>
 	<form method="post" action="">
 		<label for="pav">Menininkas</label>
-		<input type="text" id="pav">	
+		<input type="text" id="pav" name="pav">	
 		<label for="metai_gimimo">Metai gimimo</label>
-		<input type="number" name="metai_gimimo">
+		<input type="number" id="metai_gimimo" name="metai_gimimo">
 		<label for="tautybe">Tautybė</label>		
-		<input type="text" name="tautybe">
+		<input type="text" id="tautybe" name="tautybe">
 		<label for="apras">Aprašymas</label>		
-		<textarea name="apras"></textarea>				
-		<input type="submit" name="irasas" value="papildyti">
+		<textarea id="apras"  name="apras"></textarea>	
+		<input type="hidden" id="id_men"  name="id_men" value="0">					
+		<input type="submit" id="irasas"  name="irasas" value="papildyti">
 	</form>
 	<table>
-		<tr>	
+		<tr>
+			<th>Veiksmai</th>			
 			<th>Menininkas</th>
 			<th>Gimimo metai</th> 
 			<th>Tautybe</th>
 			<th>Aprašymas</th>			
 		</tr>
-		<tr th:each="kurejas : ${menininkai}">
+		<tr th:each="kurejas : ${menininkai}" data-th-data-idx="${kurejas.getId()}">
+			<td>
+				<a th:href="@{/menininkas(id=${kurejas.getId()})}">peržiūra</a>
+				<input type="button" class="tr1 edit" value="redaguoti">
+				<input type="button" class="tr1 del" value="šalinti">				
+			</td>		
 			<td th:text="${kurejas.getPav()}"></td>	
 			<td th:text="${kurejas.getMetaiGimimo()}"></td>
 			<td th:text="${kurejas.getTautybe()}"></td>	
