@@ -11,14 +11,15 @@ public class Laikytojai {
 	 @Id
 	    @GeneratedValue(strategy=GenerationType.IDENTITY)
 
-	 private int id;
+	 private Integer id;
 	 private String pav;
 	 private String valstybe;
 	 private String kryptis_meno;
 	 private String miestas;
 	 	 
-	 public Laikytojai (String pav,String valstybe, String kryptis_meno, String miestas ) {
+	 public Laikytojai (Integer id, String pav,String valstybe, String kryptis_meno, String miestas ) {
 		 super();
+		 this.id = id;
 		 this.pav = pav;
 		 this.valstybe = valstybe;
 		 this.kryptis_meno = kryptis_meno;

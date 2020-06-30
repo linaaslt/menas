@@ -33,9 +33,9 @@ public class Kuriniai {
     private Laikytojai laikytojai;
 	
 	
-	public Kuriniai ( String pav, String technika, String rusis,  Integer metai_sukurimo, Integer kaina, Integer id_laikytojai, Integer id_menininkai) {
+	public Kuriniai ( Integer id, String pav, String technika, String rusis,  Integer metai_sukurimo, Integer kaina, Integer id_laikytojai, Integer id_menininkai) {
 		super();
-		
+		this.id = id;
 		this.pav = pav;
 		this.technika = technika;
 		this.rusis = rusis;

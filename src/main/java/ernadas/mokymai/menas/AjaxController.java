@@ -53,4 +53,22 @@ public class AjaxController {
 		// This returns a JSON or XML with the users
 		return laikytojai_repository.findAll();
 	}
+	
+	@GetMapping(path="/laikytojas")
+	public @ResponseBody Laikytojai getLaikytojai1(
+			
+    		@RequestParam(required=true) Integer id
+			) {
+		// This returns a JSON or XML with the users
+		Optional<Laikytojai> op_men = laikytojai_repository.findById( id );
+		
+		Laikytojai laikytojai1 = new Laikytojai();
+		
+		if ( op_men.isPresent() ) {
+			
+			laikytojai1= op_men.get(); 
+		}
+		
+		return laikytojai1;
+	}	
 }

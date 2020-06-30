@@ -21,8 +21,9 @@ public class Menininkai {
     
     private String apras;
 
-	public Menininkai(String pav, String metai_gimimo, String tautybe, String apras) {
+	public Menininkai(Integer id, String pav, String metai_gimimo, String tautybe, String apras) {
 		super();
+		this.id = id;
 		this.pav = pav;
 		this.metai_gimimo = metai_gimimo;
 		this.tautybe = tautybe;

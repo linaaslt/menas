@@ -23,7 +23,8 @@ public class PageController {
 	
 	 @RequestMapping("/menininkai")
 	    public String menininkai(
-	    		@RequestParam(required=false) String pav
+	    		@RequestParam(required=false) String id_men	    		
+	    		, @RequestParam(required=false) String pav
 	    		, @RequestParam(required=false) String metai_gimimo
 	    		, @RequestParam(required=false) String tautybe
 	    		, @RequestParam(required=false) String apras
@@ -33,9 +34,9 @@ public class PageController {
 		 
 		 	if ( irasas != null ) {
 		 		
-		 		Menininkai kurejai = new Menininkai( pav, metai_gimimo, tautybe, apras );
+		 		Menininkai kurejai = new Menininkai( FormPrepare.TakeId ( id_men ), pav, metai_gimimo, tautybe, apras );
 		 	
-		 		if ( irasas.equals ( "papildyti" ) ) {
+		 		if ( irasas.equals ( "papildyti" ) || irasas.equals( "pakeisti" ) ) {
 		 			
 		 			menininkai_repository.save( kurejai );
 		 		}
@@ -49,7 +50,8 @@ public class PageController {
 	 
 	 @RequestMapping("/laikytojai")
 	    public String laikytojai(
-	    		@RequestParam(required=false) String pav
+	    		@RequestParam(required=false) String id
+	    		, @RequestParam(required=false) String pav
 	    		, @RequestParam(required=false) String valstybe
 	    		, @RequestParam(required=false) String kryptis_meno
 	    		, @RequestParam(required=false) String miestas
@@ -59,11 +61,11 @@ public class PageController {
 		 
 			 if ( irasas != null ) { 	
 			 		
-			 		Laikytojai laikytojas = new Laikytojai( pav, valstybe, kryptis_meno, miestas );
+			 		Laikytojai laikytojas = new Laikytojai( FormPrepare.TakeId ( id ), pav, valstybe, kryptis_meno, miestas );
 			 		System.out.println ( pav + " " + miestas + " " + kryptis_meno + " " + valstybe );
 			 		System.out.println( laikytojas.toString() );
 			 		
-			 		if ( irasas.equals ( "papildyti" ) ) {
+			 		if ( irasas.equals ( "papildyti" ) || irasas.equals( "pakeisti" )) {
 			 			
 			 			laikytojai_repository.save( laikytojas );
 			 		}
@@ -77,7 +79,8 @@ public class PageController {
 	 
 	 @RequestMapping("/menininkas")
 	    public String kuriniaiMenininko(
-	    		@RequestParam(required=false) Integer id
+	    		@RequestParam(required=true) String id
+	    		, @RequestParam(required=false) String idk	    		
 	    		, @RequestParam(required=false) String pav
 	    		, @RequestParam(required=false) String technika	
 	    		, @RequestParam(required=false) String rusis	    		
@@ -92,7 +95,7 @@ public class PageController {
 		
 			 if ( irasas != null ) {
 			 		
-			 		Kuriniai kurinys = new Kuriniai ( pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
+			 		Kuriniai kurinys = new Kuriniai ( FormPrepare.TakeId ( idk ), pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
 			 		 		
 			 		if ( irasas.equals ( "papildyti" ) ) {
 			 			
@@ -101,14 +104,15 @@ public class PageController {
 			 		
 			 	}
 		 
-		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdMenininkai( id/*, emf */ ) );
+		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.TakeId ( id )/*, emf */ ) );
 	        model.addAttribute("lst_menu", Menu.values() );  
 	        return "kuriniai";
 	 }	 
 	 
 	 @RequestMapping("/kuriniai")
 	    public String kuriniai(
-	    		@RequestParam(required=false) String pav
+	    		@RequestParam(required=false) String id	    		
+	    		, @RequestParam(required=false) String pav
 	    		, @RequestParam(required=false) String technika	
 	    		, @RequestParam(required=false) String rusis	    		
 	    		, @RequestParam(required=false) String metai_sukurimo
@@ -122,7 +126,7 @@ public class PageController {
 		
 			 if ( irasas != null ) {
 			 		
-			 		Kuriniai kurinys = new Kuriniai ( pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
+			 		Kuriniai kurinys = new Kuriniai ( FormPrepare.TakeId ( id ), pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
 			 		 		
 			 		if ( irasas.equals ( "papildyti" ) ) {
 			 			

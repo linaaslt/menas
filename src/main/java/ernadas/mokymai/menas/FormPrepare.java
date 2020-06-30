@@ -13,7 +13,19 @@ public class FormPrepare {
 		}
 		
 		return val;
-		
 	}
+	
+	public static Integer TakeId ( String id ) {
+		
+
+		Integer val = null;
+		
+		if ( ( id != null ) &&  ( ! id.trim().equals( "" ) ) && ( ! id.trim().equals( "0" ) ) ) {
+			
+			val = Integer.parseInt( id );
+		}
+		
+		return val;
+	}	
 
 }

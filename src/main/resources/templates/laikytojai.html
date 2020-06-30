@@ -170,6 +170,35 @@
     $( "#naujas_irasas" ).button().on( "click", function() {
       dialog.dialog( "open" );
     });
+    
+	$( '.edit' ).each( function () {
+    
+    	$( this ).click( function() {
+    
+	    	id= $( this ).parent().parent().data( 'idx' );
+	    	
+	    	alert ( id );
+	     
+	   		$.ajax({
+		
+				url: "http://localhost:8080/ajax/laikytojas?id=" + id
+								
+			}).done( 
+			
+				function ( laikytojas ) {
+				
+					console.log ( laikytojas ); 
+				
+					$( '#id' ).val( laikytojas.id  )		
+					$( '#pav' ).val( laikytojas.pav )
+					$( '#valstybe' ).val( laikytojas.valstybe )		
+					$( '#kryptis_meno' ).val( laikytojas.kryptis_meno )	
+					$( '#miestas' ).val ( laikytojas.miestas );				
+					$ ('#irasas' ).val ( 'pakeisti' ); 						
+				}
+			);
+		}); 
+    });
   });
   </script>	
 </head>
@@ -207,7 +236,12 @@
 			<th>Kryptis meno</th>
 			<th>Valstybė</th>			
 		</tr>
-		<tr th:each="laikytojas : ${laikytojai}">
+		<tr th:each="laikytojas : ${laikytojai}" data-th-data-idx="${laikytojas.getId()}">
+			<td>
+				<a th:href="@{/laikytojasx(id=${laikytojas.getId()})}">peržiūra</a>
+				<input type="button" class="tr1 edit" value="redaguoti">
+				<input type="button" class="tr1 del" value="šalinti">				
+			</td>
 			<td th:text="${laikytojas.getPav()}"></td>	
 			<td th:text="${laikytojas.getMiestas()}"></td>
 			<td th:text="${laikytojas.getKryptis_meno()}"></td>	
