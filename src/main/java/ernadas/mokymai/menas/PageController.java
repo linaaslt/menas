@@ -34,7 +34,7 @@ public class PageController {
 		 
 		 	if ( irasas != null ) {
 		 		
-		 		Menininkai kurejai = new Menininkai( FormPrepare.TakeId ( id_men ), pav, metai_gimimo, tautybe, apras );
+		 		Menininkai kurejai = new Menininkai( FormPrepare.takeId ( id_men ), pav, metai_gimimo, tautybe, apras );
 		 	
 		 		if ( irasas.equals ( "papildyti" ) || irasas.equals( "pakeisti" ) ) {
 		 			
@@ -61,7 +61,7 @@ public class PageController {
 		 
 			 if ( irasas != null ) { 	
 			 		
-			 		Laikytojai laikytojas = new Laikytojai( FormPrepare.TakeId ( id ), pav, valstybe, kryptis_meno, miestas );
+			 		Laikytojai laikytojas = new Laikytojai( FormPrepare.takeId ( id ), pav, valstybe, kryptis_meno, miestas );
 			 		System.out.println ( pav + " " + miestas + " " + kryptis_meno + " " + valstybe );
 			 		System.out.println( laikytojas.toString() );
 			 		
@@ -72,9 +72,51 @@ public class PageController {
 			 		
 			 	}
 		 
-		 	model.addAttribute("laikytojai", laikytojai_repository.findAll() );
+		 	model.addAttribute("laikytojai", laikytojai_repository.findAll());
 	        model.addAttribute("lst_menu", Menu.values() );  
 	        return "laikytojai";
+	 }
+	 
+	 @RequestMapping("/laikytojas")
+	    public String laikytojas(
+	    		@RequestParam(required=true) String id
+	    		, @RequestParam(required=false) String ide	    		
+	    		, @RequestParam(required=false) String pav
+	    		, @RequestParam(required=false) String technika	
+	    		, @RequestParam(required=false) String rusis	    		
+	    		, @RequestParam(required=false) String metai_sukurimo
+	    		, @RequestParam(required=false) String kaina
+	    		, @RequestParam(required=false) String id_laikytojai
+	    		, @RequestParam(required=false) String id_menininko
+	    		, @RequestParam(required=false) String irasas
+	    		, Model model 
+	    	) {
+		 
+			 if ( irasas != null ) { 	
+			 		
+
+			 		Kuriniai kurinys = new Kuriniai ( 
+			 				
+			 				FormPrepare.takeId ( ide )
+			 				, pav
+			 				, technika
+			 				, rusis, FormPrepare.integerOrNull ( metai_sukurimo )
+			 				, FormPrepare.integerOrNull( kaina )
+			 				, FormPrepare.integerOrNull( id_laikytojai )
+			 				,  FormPrepare.integerOrNull(  id_menininko ) 
+			 		); 				
+			 		 		
+			 		if ( irasas.equals ( "papildyti" ) ) {
+			 			
+			 			kuriniai_repository.save( kurinys );
+			 		
+			 		}
+			 		
+			 	}
+		 
+		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.takeId ( id ) ) );
+	        model.addAttribute("lst_menu", Menu.values() );  
+	        return "kuriniai";
 	 }
 	 
 	 @RequestMapping("/menininkas")
@@ -87,7 +129,6 @@ public class PageController {
 	    		, @RequestParam(required=false) String metai_sukurimo
 	    		, @RequestParam(required=false) String kaina
 	    		, @RequestParam(required=false) String id_laikytojai
-	    		, @RequestParam(required=false) String id_menininko
 	    		, @RequestParam(required=false) String irasas
 	    		, Model model 
 	    	) {
@@ -95,7 +136,17 @@ public class PageController {
 		
 			 if ( irasas != null ) {
 			 		
-			 		Kuriniai kurinys = new Kuriniai ( FormPrepare.TakeId ( idk ), pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
+			 		Kuriniai kurinys = new Kuriniai ( 
+			 				
+			 				FormPrepare.takeId ( idk )
+			 				, pav
+			 				, technika
+			 				, rusis
+			 				, FormPrepare.integerOrNull ( metai_sukurimo )
+			 				, FormPrepare.integerOrNull( kaina )
+			 				, FormPrepare.integerOrNull( id_laikytojai )
+			 				,  FormPrepare.integerOrNull(  id ) 
+			 		); 				
 			 		 		
 			 		if ( irasas.equals ( "papildyti" ) ) {
 			 			
@@ -104,9 +155,9 @@ public class PageController {
 			 		
 			 	}
 		 
-		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.TakeId ( id )/*, emf */ ) );
+		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.takeId ( id )/*, emf */ ) );
 	        model.addAttribute("lst_menu", Menu.values() );  
-	        return "kuriniai";
+	        return "kuriniai_menininko";
 	 }	 
 	 
 	 @RequestMapping("/kuriniai")
@@ -126,7 +177,17 @@ public class PageController {
 		
 			 if ( irasas != null ) {
 			 		
-			 		Kuriniai kurinys = new Kuriniai ( FormPrepare.TakeId ( id ), pav, technika, rusis, FormPrepare.IntegerOrNull ( metai_sukurimo ), FormPrepare.IntegerOrNull( kaina ), FormPrepare.IntegerOrNull( id_laikytojai ),  FormPrepare.IntegerOrNull(  id_menininko ) ); 				
+			 		Kuriniai kurinys = new Kuriniai ( 
+			 				
+			 				FormPrepare.takeId ( id )
+			 				, pav
+			 				, technika
+			 				, rusis
+			 				, FormPrepare.integerOrNull ( metai_sukurimo )
+			 				, FormPrepare.integerOrNull( kaina )
+			 				, FormPrepare.integerOrNull( id_laikytojai )
+			 				,  FormPrepare.integerOrNull(  id_menininko ) 
+			 		); 				
 			 		 		
 			 		if ( irasas.equals ( "papildyti" ) ) {
 			 			

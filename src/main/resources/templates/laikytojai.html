@@ -230,7 +230,8 @@
 	</form>
 	</div>
 	<table>
-		<tr>	
+		<tr>
+			<th>Veiksmai</th>	
 			<th>Laikytojas</th>
 			<th>Miestas</th> 
 			<th>Kryptis meno</th>
@@ -238,7 +239,7 @@
 		</tr>
 		<tr th:each="laikytojas : ${laikytojai}" data-th-data-idx="${laikytojas.getId()}">
 			<td>
-				<a th:href="@{/laikytojasx(id=${laikytojas.getId()})}">peržiūra</a>
+				<a th:href="@{/laikytojas(id=${laikytojas.getId()})}">peržiūra</a>
 				<input type="button" class="tr1 edit" value="redaguoti">
 				<input type="button" class="tr1 del" value="šalinti">				
 			</td>

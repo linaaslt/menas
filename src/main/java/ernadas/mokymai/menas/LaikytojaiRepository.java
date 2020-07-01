@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface LaikytojaiRepository extends CrudRepository<Laikytojai, Integer> {
 
-	@Query(value = "SELECT * FROM laikytojai WHERE id_menininkai = ?1", nativeQuery = true)
-	List<Laikytojai> findByIdLaikytojai(Integer id );
-	Optional<Laikytojai> findById( Integer id );
+//	@Query(value = "SELECT * FROM laikytojai WHERE 1", nativeQuery = true)
+//	List<Laikytojai> findByIdLaikytojai(Integer id );
+//	Optional<Laikytojai> findById( Integer id );
 }

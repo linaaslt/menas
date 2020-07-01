@@ -23,5 +23,6 @@ public interface KuriniaiRepository extends CrudRepository<Kuriniai, Integer> {
 //	      em.close();
 //		return list;
 //	}
-
+	@Query(value = "SELECT * FROM kuriniai WHERE id_laikytojai = ?1", nativeQuery = true)
+	List<Kuriniai> findByIdLaikytojai(Integer id );
 }

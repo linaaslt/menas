@@ -2,7 +2,7 @@ package ernadas.mokymai.menas;
 
 public class FormPrepare {
 	
-	public static Integer IntegerOrNull ( String from ) {
+	public static Integer integerOrNull ( String from ) {
 		
 
 		Integer val = null;
@@ -15,7 +15,7 @@ public class FormPrepare {
 		return val;
 	}
 	
-	public static Integer TakeId ( String id ) {
+	public static Integer takeId ( String id ) {
 		
 
 		Integer val = null;
