@@ -42,16 +42,57 @@
 	</style>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>  
+  <script>
   $( function() {
+  
+   var avail_menininkai;
+	   
+	//   alert( 'pries' );
+	   
+		$.ajax({
+		
+			url: "http://localhost:8080/ajax/lst-menininkai"
+							
+		}).done( 
+		
+			function ( data_menininkai ) {
+			
+				avail_menininkai = data_menininkai;
+				
+				 // alert ( 'po: ' + JSON.stringify ( avail_menininkai ) );
+				
+				   $( "#menininkas" ).autocomplete({
+				   
+				      minLength: 0,
+				      source: avail_menininkai,
+				      focus: function( event, ui ) {
+				        $( "#menininkas" ).val( ui.item.pav );
+				        return false;
+				      },
+				      select: function( event, ui ) {
+				      
+				        $( "#menininkas" ).val( ui.item.pav );
+				        $( "#id_menininko" ).val( ui.item.id );
+				
+				        return false;
+				      }
+				    }) 
+				    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+				    
+				      return $( "<li>" )
+				        .append( "<div>" + item.pav + "</div>" )
+				        .appendTo( ul );
+				    };				
+			}
+		);	   
+  
     var dialog, form,
  
       // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-      pav = $( "#pav" ),
       meno_kryptis = $( "#kryptis_meno" ),
       miestas = $( "#miestas" ),
       valstybe = $( "#valstybe" ),
-      allFields = $( [] ).add( pav ).add( meno_kryptis ).add( miestas ).add( valstybe ),
+      allFields = $( [] ).add( meno_kryptis ).add( miestas ).add( valstybe ),
       tips = $( ".validateTips" );
  
     function updateTips( t ) {
@@ -84,10 +125,10 @@
       }
     }
  
-    function addLaikytojas() {
+    function checkKurinys() {
       var valid = true;
       allFields.removeClass( "ui-state-error" );
- 
+ /*
       valid = valid && checkLength( pav, "pav", 3, 64 );
       valid = valid && checkLength( meno_kryptis, "kryptis_meno", 6, 32 );
       valid = valid && checkLength( miestas, "miestas", 4, 32 );
@@ -96,7 +137,7 @@
       valid = valid && checkRegexp( pav, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ_\s])+$/i, "Pav turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
       valid = valid && checkRegexp( miestas, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Miestas turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
       valid = valid && checkRegexp( valstybe, /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]([0-9a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ-\s])+$/i, "Valstybe turi būti iš raidžių, skaitmenų, pabraukimo, tarpo ir turi prasidėti raide." );
-  
+ */ 
       alert ( valid );      
       if ( valid ) {
       
@@ -116,7 +157,7 @@
       buttons: {
         "Išsaugoti": function() {
         
-        	if ( addLaikytojas() ) {
+        	if ( checkKurinys() ) {
         	
         		alert ( $('#pav').val() );
         	
@@ -138,6 +179,7 @@
     form = dialog.find( "form" );
  
     $( "#naujas_irasas" ).button().on( "click", function() {
+    
       dialog.dialog( "open" );
     });
     
@@ -151,20 +193,28 @@
 	     
 	   		$.ajax({
 		
-				url: "http://localhost:8080/ajax/laikytojas?id=" + id
+				url: "http://localhost:8080/ajax/kurinys?id=" + id
 								
 			}).done( 
 			
-				function ( laikytojas ) {
+				function ( kurinys ) {
 				
-					console.log ( laikytojas ); 
-				
-					$( '#id' ).val( laikytojas.id  )		
-					$( '#pav' ).val( laikytojas.pav )
-					$( '#valstybe' ).val( laikytojas.valstybe )		
-					$( '#kryptis_meno' ).val( laikytojas.kryptis_meno )	
-					$( '#miestas' ).val ( laikytojas.miestas );				
-					$ ('#irasas' ).val ( 'pakeisti' ); 						
+					console.log ( kurinys ); 
+			
+					$( '#idx' ).val( kurinys.id  )		
+					$( '#pav' ).val( kurinys.pav )
+					$( '#technika' ).val( kurinys.technika )		
+					$( '#metai_sukurimo' ).val( kurinys.metaiSukurimo)
+					$( '#rusis' ).val( kurinys.rusis )					
+					$( '#kaina' ).val ( kurinys.kaina );
+					
+					if ( kurinys.menininkai ) {
+								
+						$( '#menininkas' ).val ( kurinys.menininkai.pav ); 
+						$( '#id_menininko' ).val ( kurinys.id_menininkai );
+					}
+					$( '#irasas' ).val ( 'pakeisti' );
+					dialog.dialog( "open" );											
 				}
 			);
 		}); 
@@ -185,16 +235,22 @@
 	<div id="dialog-form" class='ui-front' title="Laikytojas">
   	<p class="validateTips">All form fields are required.</p>	
 	<form id="frm_laikytojas" method="post" action="">
-		<label for="pav">Laikytojas</label>
+		<label for="pav">Pavadinimas</label>
 		<input type="text" id="pav" name="pav">
-		<label for="miestas">Miestas</label>
-		<input type="text" id="miestas" name="miestas">
-		<label for="meno_kryptis">Kryptis meno</label>		
-		<input type="text" id="kryptis_meno" name="kryptis_meno">
-		<label for="valstybe">Valstybė</label>		
-		<input type="text" id="valstybe" name="valstybe">
-		<input type="hidden" name="irasas" value="papildyti">
-		
+		<label for="miestas">Technika</label>
+		<input type="text" id="technika" name="technika">
+		<label for="meno_kryptis">Rūšis</label>		
+		<input type="text" id="rusis" name="rusis">
+		<label for="valstybe">Metai sukūrimo</label>		
+		<input type="text" id="metai_sukurimo" name="metai_sukurimo">
+		<label for="valstybe">Kaina</label>		
+		<input type="text" id="kaina" name="kaina">
+		<label for="valstybe">Menininkas</label>
+		<input type="text" id="menininkas">		
+		<input type="hidden" id="id_menininko" name="id_menininko">
+		<input type="hidden" id="idx" name="idx" value="0">		
+		<input type="hidden" id="irasas" name="irasas" value="papildyti">
+			
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">						
 	</form>
@@ -202,21 +258,24 @@
 	<table>
 		<tr>
 			<th>Veiksmai</th>	
-			<th>Laikytojas</th>
-			<th>Miestas</th> 
-			<th>Kryptis meno</th>
-			<th>Valstybė</th>			
+			<th>Pavadinimas</th> 
+			<th>Technika</th>
+			<th>Rūšis</th>
+			<th>Metai sukūrimo</th>
+			<th>Kaina</th>
+			<th>Menininkas</th>			
 		</tr>
-		<tr th:each="laikytojas : ${laikytojai}" data-th-data-idx="${laikytojas.getId()}">
+		<tr th:each="kurinys : ${kuriniai}" data-th-data-idx="${kurinys.getId()}">
 			<td>
-				<a th:href="@{/laikytojas(id=${laikytojas.getId()})}">peržiūra</a>
-				<input type="button" class="tr1 edit" value="redaguoti">
-				<input type="button" class="tr1 del" value="šalinti">				
+				<!--a th:href=>peržiūra</a-->
+				<input type="button" class="tr1 edit" value="redaguoti">			
 			</td>
-			<td th:text="${laikytojas.getPav()}"></td>	
-			<td th:text="${laikytojas.getMiestas()}"></td>
-			<td th:text="${laikytojas.getKryptis_meno()}"></td>	
-			<td th:text="${laikytojas.getValstybe()}"></td>					
+			<td th:text="${kurinys.getPav()}">	
+			<td th:text="${kurinys.getTechnika()}"></td>
+			<td th:text="${kurinys.getRusis()}"></td>	
+			<td th:text="${kurinys.getMetaiSukurimo()}"></td>
+			<td th:text="${kurinys.getKaina()}"></td>
+			<td th:text="${kurinys.getMenininkai()} ? ${kurinys.getMenininkai().getPav()} : 'x' "></td>						
 		</tr>
 	</table>					
 </body>

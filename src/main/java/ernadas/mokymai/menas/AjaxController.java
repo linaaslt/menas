@@ -21,8 +21,37 @@ public class AjaxController {
 	private MenininkaiRepository menininkai_repository; 
 	
 	@Autowired
-	private LaikytojaiRepository laikytojai_repository; 
+	private LaikytojaiRepository laikytojai_repository;
 	
+	@Autowired
+	private KuriniaiRepository kuriniai_repository;
+	
+	
+	@GetMapping(path="/lst-kuriniai")
+	public @ResponseBody Iterable<Kuriniai> getAllKuriniai() {
+		// This returns a JSON or XML with the users
+		return kuriniai_repository.findAll();
+	}
+	
+	@GetMapping(path="/kurinys")
+	public @ResponseBody Kuriniai getKurynys1(
+			
+    		@RequestParam(required=true) Integer id
+			) {
+		// This returns a JSON or XML with the users
+		Optional<Kuriniai> op_men = kuriniai_repository.findById( id );
+		
+		Kuriniai kurinys1 = new Kuriniai();
+		
+		if ( op_men.isPresent() ) {
+			
+			kurinys1 = op_men.get(); 
+		}
+		
+		System.out.println( kurinys1.toString() );
+		
+		return kurinys1;
+	}	
 	
 	@GetMapping(path="/lst-menininkai")
 	public @ResponseBody Iterable<Menininkai> getAllMenininkai() {

@@ -1,5 +1,7 @@
 package ernadas.mokymai.menas;
 
+import java.util.Optional;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,43 +82,68 @@ public class PageController {
 	 @RequestMapping("/laikytojas")
 	    public String laikytojas(
 	    		@RequestParam(required=true) String id
-	    		, @RequestParam(required=false) String ide	    		
+	    		, @RequestParam(required=false) String idx	    		
 	    		, @RequestParam(required=false) String pav
 	    		, @RequestParam(required=false) String technika	
 	    		, @RequestParam(required=false) String rusis	    		
 	    		, @RequestParam(required=false) String metai_sukurimo
 	    		, @RequestParam(required=false) String kaina
-	    		, @RequestParam(required=false) String id_laikytojai
 	    		, @RequestParam(required=false) String id_menininko
 	    		, @RequestParam(required=false) String irasas
 	    		, Model model 
 	    	) {
 		 
-			 if ( irasas != null ) { 	
-			 		
-
-			 		Kuriniai kurinys = new Kuriniai ( 
-			 				
-			 				FormPrepare.takeId ( ide )
-			 				, pav
-			 				, technika
-			 				, rusis, FormPrepare.integerOrNull ( metai_sukurimo )
-			 				, FormPrepare.integerOrNull( kaina )
-			 				, FormPrepare.integerOrNull( id_laikytojai )
-			 				,  FormPrepare.integerOrNull(  id_menininko ) 
-			 		); 				
-			 		 		
-			 		if ( irasas.equals ( "papildyti" ) ) {
-			 			
-			 			kuriniai_repository.save( kurinys );
-			 		
-			 		}
-			 		
-			 	}
+		 	Integer id_kurinio = FormPrepare.takeId ( idx );
+		 	
+		 	if ( irasas != null ) {
+		 		
+		 		System.out.println ( irasas );
 		 
-		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.takeId ( id ) ) );
-	        model.addAttribute("lst_menu", Menu.values() );  
-	        return "kuriniai";
+				if ( irasas.equals ( "papildyti" ) )  { 	
+				 		
+				 		Kuriniai kurinys = new Kuriniai ( 
+				 				
+				 				id_kurinio
+				 				, pav
+				 				, technika
+				 				, rusis
+				 				, FormPrepare.integerOrNull ( metai_sukurimo )
+				 				, FormPrepare.integerOrNull( kaina )
+				 				, FormPrepare.integerOrNull( id )
+				 				,  FormPrepare.integerOrNull(  id_menininko ) 
+				 		); 	
+				 		System.out.println( "naujas: " + kurinys.toString() );
+				 		kuriniai_repository.save( kurinys );
+				 }
+				 		 		
+				 if ( irasas.equals ( "pakeisti" ) ) {
+				 			
+						Optional<Kuriniai> op_men = kuriniai_repository.findById( id_kurinio );
+						
+						Kuriniai kurinys1 = new Kuriniai();
+						
+						if ( op_men.isPresent() ) {
+							
+							kurinys1 = op_men.get(); 
+							System.out.println( "pries: " + kurinys1.toString() );
+							kurinys1.takeFields ( 
+	
+					 				pav
+					 				, technika
+					 				, rusis
+					 				, FormPrepare.integerOrNull ( metai_sukurimo )
+					 				, FormPrepare.integerOrNull( kaina )
+					 				, FormPrepare.integerOrNull( id )
+					 				,  FormPrepare.integerOrNull(  id_menininko ) 
+					 		); 
+							System.out.println( "po: " + kurinys1.toString() );
+					 		kuriniai_repository.save( kurinys1 );						
+						}				 		
+				 }
+		 	}
+	        model.addAttribute("lst_menu", Menu.values() );
+		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.takeId ( id ) ) );  
+	        return "kuriniai_laikytoju";
 	 }
 	 
 	 @RequestMapping("/menininkas")
