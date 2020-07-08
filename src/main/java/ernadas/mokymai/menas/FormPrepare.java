@@ -13,7 +13,20 @@ public class FormPrepare {
 		}
 		
 		return val;
-	}
+	}	
+	
+	public static Double doubleOrNull ( String from ) {
+		
+
+		Double val = null;
+		
+		if ( ( from != null ) &&  ( ! from.trim().equals( "" ) ) ) {
+			
+			val = Double.parseDouble( from );
+		}
+		
+		return val;
+	}	
 	
 	public static Integer takeId ( String id ) {
 		

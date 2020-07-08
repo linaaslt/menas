@@ -81,14 +81,11 @@ public class PageController {
 	 
 	 @RequestMapping("/laikytojas")
 	    public String laikytojas(
-	    		@RequestParam(required=true) String id
+	    		
+	    		@RequestParam(required=false) String id	
 	    		, @RequestParam(required=false) String idx	    		
-	    		, @RequestParam(required=false) String pav
-	    		, @RequestParam(required=false) String technika	
-	    		, @RequestParam(required=false) String rusis	    		
-	    		, @RequestParam(required=false) String metai_sukurimo
-	    		, @RequestParam(required=false) String kaina
-	    		, @RequestParam(required=false) String id_menininko
+	    		, @RequestParam(required=false) String id_laikytojas
+	    		, @RequestParam(required=false) String kaina    		
 	    		, @RequestParam(required=false) String irasas
 	    		, Model model 
 	    	) {
@@ -99,51 +96,31 @@ public class PageController {
 		 		
 		 		System.out.println ( irasas );
 		 
-				if ( irasas.equals ( "papildyti" ) )  { 	
+				if ( irasas.equals ( "parduoti" ) )  { 	
 				 		
-				 		Kuriniai kurinys = new Kuriniai ( 
-				 				
-				 				id_kurinio
-				 				, pav
-				 				, technika
-				 				, rusis
-				 				, FormPrepare.integerOrNull ( metai_sukurimo )
-				 				, FormPrepare.integerOrNull( kaina )
-				 				, FormPrepare.integerOrNull( id )
-				 				,  FormPrepare.integerOrNull(  id_menininko ) 
-				 		); 	
-				 		System.out.println( "naujas: " + kurinys.toString() );
-				 		kuriniai_repository.save( kurinys );
-				 }
-				 		 		
-				 if ( irasas.equals ( "pakeisti" ) ) {
+				 		// Kuriniai kurinys = new Kuriniai (); 
+				 		Optional<Kuriniai> okuriniai = kuriniai_repository.findById ( id_kurinio );
+				 		
+				 		if ( ! okuriniai.isEmpty() ) {
 				 			
-						Optional<Kuriniai> op_men = kuriniai_repository.findById( id_kurinio );
-						
-						Kuriniai kurinys1 = new Kuriniai();
-						
-						if ( op_men.isPresent() ) {
-							
-							kurinys1 = op_men.get(); 
-							System.out.println( "pries: " + kurinys1.toString() );
-							kurinys1.takeFields ( 
-	
-					 				pav
-					 				, technika
-					 				, rusis
-					 				, FormPrepare.integerOrNull ( metai_sukurimo )
-					 				, FormPrepare.integerOrNull( kaina )
-					 				, FormPrepare.integerOrNull( id )
-					 				,  FormPrepare.integerOrNull(  id_menininko ) 
-					 		); 
-							System.out.println( "po: " + kurinys1.toString() );
-					 		kuriniai_repository.save( kurinys1 );						
-						}				 		
+				 				Kuriniai kurinys1 = okuriniai.get();
+				 				kurinys1.setId_laikytojai( FormPrepare.integerOrNull( id_laikytojas ) );
+				 				
+				 				Integer kainax = FormPrepare.integerOrNull( kaina );
+				 				
+				 				if ( kainax != null ) {
+				 				
+				 					kurinys1.setKaina ( kainax );
+				 				}
+				 				
+						 		System.out.println( ": " + kurinys1.toString() );
+						 		kuriniai_repository.save( kurinys1 );				 				
+				 		}
 				 }
 		 	}
-	        model.addAttribute("lst_menu", Menu.values() );
-		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.takeId ( id ) ) );  
-	        return "kuriniai_laikytoju";
+		 	model.addAttribute( "lst_menu", Menu.values() );
+		 	model.addAttribute( "kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.integerOrNull ( id ) ) );
+		 	return "kuriniai_laikytoju";
 	 }
 	 
 	 @RequestMapping("/menininkas")
@@ -182,8 +159,8 @@ public class PageController {
 			 		
 			 	}
 		 
-		 	model.addAttribute("kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.takeId ( id )/*, emf */ ) );
-	        model.addAttribute("lst_menu", Menu.values() );  
+		 	model.addAttribute ( "kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.takeId ( id )/*, emf */ ) );
+	        model.addAttribute ( "lst_menu", Menu.values() );  
 	        return "kuriniai_menininko";
 	 }	 
 	 
@@ -228,8 +205,8 @@ public class PageController {
 			 		
 			 	}
 		 
-		 	model.addAttribute("kuriniai", kuriniai_repository.findAll() );
-	        model.addAttribute("lst_menu", Menu.values() );  
+		 	model.addAttribute ( "kuriniai", kuriniai_repository.findAll() );
+	        model.addAttribute ( "lst_menu", Menu.values() );  
 	        return "kuriniai";
 	 }
 }

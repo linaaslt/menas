@@ -71,48 +71,7 @@
 				      select: function( event, ui ) {
 				      
 				        $( "#laikytojas" ).val( ui.item.pav );
-				        $( "#id_laikytojo" ).val( ui.item.id );
-				
-				        return false;
-				      }
-				    }) 
-				    .autocomplete( "instance" )._renderItem = function( ul, item ) {
-				    
-				      return $( "<li>" )
-				        .append( "<div>" + item.pav + "</div>" )
-				        .appendTo( ul );
-				    };				
-			}
-		);
-		
-  var avail_menininkai;
-	   
-	//   alert( 'pries' );
-	   
-		$.ajax({
-		
-			url: "http://localhost:8080/ajax/lst-menininkai"
-							
-		}).done( 
-		
-			function ( data_menininkai ) {
-			
-				avail_menininkai = data_menininkai;
-				
-				 // alert ( 'po: ' + JSON.stringify ( avail_menininkai ) );
-				
-				   $( "#menininkas" ).autocomplete({
-				   
-				      minLength: 0,
-				      source: avail_menininkai,
-				      focus: function( event, ui ) {
-				        $( "#menininkas" ).val( ui.item.pav );
-				        return false;
-				      },
-				      select: function( event, ui ) {
-				      
-				        $( "#menininkas" ).val( ui.item.pav );
-				        $( "#id_menininko" ).val( ui.item.id );
+				        $( "#id_laikytojas" ).val( ui.item.id );
 				
 				        return false;
 				      }
@@ -219,7 +178,7 @@
 					if ( kurinys.laikytojai ) {
 								
 						$( '#laikytojas' ).val ( kurinys.laikytojai.pav ); 
-						$( '#id_laikytojo' ).val ( kurinys.id_laikytojai );
+						$( '#id_laikytojas' ).val ( kurinys.id_laikytojai );
 					}
 					$( '#irasas' ).val ( 'parduoti' );
 					dialog.dialog( "open" );											
@@ -236,7 +195,6 @@
 	</nav>
 
 	<h3> Laikytojo kūriniai </h3>
-	
 	<div style="width: 40%; margin 10px auto 10px auto">
 	<div id="parduoti-form" class='ui-front' title="Parduoti">
 	<form id="parduoti_kuriny" method="post" action=" ">
@@ -254,8 +212,7 @@
 		<label for="valstybe">Kaina</label>		
 		<input disabled type="text" id="kaina">
 		<label for="valstybe">Menininkas</label>
-		<input disabled type="text" id="menininkas">
-		<input type="hidden" id="id_menininkas" name="id_menininkas">			
+		<input disabled type="text" id="menininkas">			
 		<input type="hidden" id="idx" name="idx" value="0">		
 		<input type="hidden" id="irasas" name="irasas" value="papildyti">
 		
