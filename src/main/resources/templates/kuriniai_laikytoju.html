@@ -42,10 +42,50 @@
 	</style>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="check.lib.js"></script>
   <script>
   $( function() {
   
-   var avail_menininkai;
+  var avail_laikytojai;	   
+	   
+		$.ajax({
+	
+			url: "http://localhost:8080/ajax/lst-laikytojai"
+							
+		}).done( 
+		
+			function ( data_laikytojai ) {
+			
+				avail_laikytojai = data_laikytojai;
+				
+				 // alert ( 'po: ' + JSON.stringify ( avail_laikytojai ) );
+				
+				   $( "#laikytojas" ).autocomplete({
+				   
+				      minLength: 0,
+				      source: avail_laikytojai,
+				      focus: function( event, ui ) {
+				        $( "#laikytojas" ).val( ui.item.pav );
+				        return false;
+				      },
+				      select: function( event, ui ) {
+				      
+				        $( "#laikytojas" ).val( ui.item.pav );
+				        $( "#id_laikytojo" ).val( ui.item.id );
+				
+				        return false;
+				      }
+				    }) 
+				    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+				    
+				      return $( "<li>" )
+				        .append( "<div>" + item.pav + "</div>" )
+				        .appendTo( ul );
+				    };				
+			}
+		);
+		
+  var avail_menininkai;
 	   
 	//   alert( 'pries' );
 	   
@@ -95,35 +135,7 @@
       allFields = $( [] ).add( meno_kryptis ).add( miestas ).add( valstybe ),
       tips = $( ".validateTips" );
  
-    function updateTips( t ) {
-      tips
-        .text( t )
-        .addClass( "ui-state-highlight" );
-      setTimeout(function() {
-        tips.removeClass( "ui-state-highlight", 1500 );
-      }, 500 );
-    }
- 
-    function checkLength( o, n, min, max ) {
-      if ( o.val().length > max || o.val().length < min ) {
-        o.addClass( "ui-state-error" );
-        updateTips( "Length of " + n + " must be between " +
-          min + " and " + max + "." );
-        return false;
-      } else {
-        return true;
-      }
-    }
- 
-    function checkRegexp( o, regexp, n ) {
-      if ( !( regexp.test( o.val() ) ) ) {
-        o.addClass( "ui-state-error" );
-        updateTips( n );
-        return false;
-      } else {
-        return true;
-      }
-    }
+
  
     function checkKurinys() {
       var valid = true;
@@ -147,15 +159,16 @@
       }
       return valid;
     }
- 
-    dialog = $( "#dialog-form" ).dialog({
+    
+  
+    dialog = $( "#parduoti-form" ).dialog({
     
       autoOpen: false,
       height: 400,
       width: 350,
       modal: true,
       buttons: {
-        "Išsaugoti": function() {
+        "Parduoti": function() {
         
         	if ( checkKurinys() ) {
         	
@@ -177,13 +190,8 @@
     });
  
     form = dialog.find( "form" );
- 
-    $( "#naujas_irasas" ).button().on( "click", function() {
     
-      dialog.dialog( "open" );
-    });
-    
-	$( '.edit' ).each( function () {
+	$( '.sell' ).each( function () {
     
     	$( this ).click( function() {
     
@@ -208,12 +216,12 @@
 					$( '#rusis' ).val( kurinys.rusis )					
 					$( '#kaina' ).val ( kurinys.kaina );
 					
-					if ( kurinys.menininkai ) {
+					if ( kurinys.laikytojai ) {
 								
-						$( '#menininkas' ).val ( kurinys.menininkai.pav ); 
-						$( '#id_menininko' ).val ( kurinys.id_menininkai );
+						$( '#laikytojas' ).val ( kurinys.laikytojai.pav ); 
+						$( '#id_laikytojo' ).val ( kurinys.id_laikytojai );
 					}
-					$( '#irasas' ).val ( 'pakeisti' );
+					$( '#irasas' ).val ( 'parduoti' );
 					dialog.dialog( "open" );											
 				}
 			);
@@ -227,29 +235,30 @@
 		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
 	</nav>
 
-	<h3> Laikytojai </h3>
+	<h3> Laikytojo kūriniai </h3>
 	
 	<div style="width: 40%; margin 10px auto 10px auto">
-	<input type="button" id="naujas_irasas" value="papildyti">
-	<div>
-	<div id="dialog-form" class='ui-front' title="Laikytojas">
-  	<p class="validateTips">All form fields are required.</p>	
-	<form id="frm_laikytojas" method="post" action="">
+	<div id="parduoti-form" class='ui-front' title="Parduoti">
+	<form id="parduoti_kuriny" method="post" action=" ">
 		<label for="pav">Pavadinimas</label>
-		<input type="text" id="pav" name="pav">
+		<input disabled type="text" id="pav">
+		<label for="pav">Laikytojas</label>
+		<input type="text" id="laikytojas" name="laikytojas">	
+		<input type="hidden" id="id_laikytojas" name="id_laikytojas">	
 		<label for="miestas">Technika</label>
-		<input type="text" id="technika" name="technika">
+		<input disabled type="text" id="technika">
 		<label for="meno_kryptis">Rūšis</label>		
-		<input type="text" id="rusis" name="rusis">
+		<input disabled type="text" id="rusis">
 		<label for="valstybe">Metai sukūrimo</label>		
-		<input type="text" id="metai_sukurimo" name="metai_sukurimo">
+		<input disabled type="text" id="metai_sukurimo">
 		<label for="valstybe">Kaina</label>		
-		<input type="text" id="kaina" name="kaina">
+		<input disabled type="text" id="kaina">
 		<label for="valstybe">Menininkas</label>
-		<input type="text" id="menininkas">		
-		<input type="hidden" id="id_menininko" name="id_menininko">
+		<input disabled type="text" id="menininkas">
+		<input type="hidden" id="id_menininkas" name="id_menininkas">			
 		<input type="hidden" id="idx" name="idx" value="0">		
 		<input type="hidden" id="irasas" name="irasas" value="papildyti">
+		
 			
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">						
@@ -263,18 +272,20 @@
 			<th>Rūšis</th>
 			<th>Metai sukūrimo</th>
 			<th>Kaina</th>
+			<th>Laikytojas</th>
 			<th>Menininkas</th>			
 		</tr>
 		<tr th:each="kurinys : ${kuriniai}" data-th-data-idx="${kurinys.getId()}">
 			<td>
 				<!--a th:href=>peržiūra</a-->
-				<input type="button" class="tr1 edit" value="redaguoti">			
+				<input type="button" class="tr1 sell" value="Parduoti">			
 			</td>
 			<td th:text="${kurinys.getPav()}">	
 			<td th:text="${kurinys.getTechnika()}"></td>
 			<td th:text="${kurinys.getRusis()}"></td>	
 			<td th:text="${kurinys.getMetaiSukurimo()}"></td>
 			<td th:text="${kurinys.getKaina()}"></td>
+			<td th:text="${kurinys.getLaikytojai()} ? ${kurinys.getLaikytojai().getPav()} : 'x' "></td>	
 			<td th:text="${kurinys.getMenininkai()} ? ${kurinys.getMenininkai().getPav()} : 'x' "></td>						
 		</tr>
 	</table>					

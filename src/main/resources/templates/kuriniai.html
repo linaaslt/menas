@@ -107,6 +107,47 @@
 			}
 		);	   
 	   
+	    var avail_kuriniai;
+	   
+	//   alert( 'pries' );
+	   
+		$.ajax({
+		
+			url: "http://localhost:8080/ajax/lst-kuriniai"
+							
+		}).done( 
+		
+			function ( data_kuriniai ) {
+			
+				avail_kuriniai = data_kuriniai;
+				
+				 // alert ( 'po: ' + JSON.stringify ( avail_kuriniai ) );
+				
+				   $( "#kurinys" ).autocomplete({
+				   
+				      minLength: 0,
+				      source: avail_menininkai,
+				      focus: function( event, ui ) {
+				        $( "#kurinys" ).val( ui.item.pav );
+				        return false;
+				      },
+				      select: function( event, ui ) {
+				      
+				        $( "#kurinys" ).val( ui.item.pav );
+				        $( "#id" ).val( ui.item.id );
+				
+				        return false;
+				      }
+				    }) 
+				    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+				    
+				      return $( "<li>" )
+				        .append( "<div>" + item.pav + "</div>" )
+				        .appendTo( ul );
+				    };				
+			}
+		);	   
+	   
 		var avail_laikytojai;	   
 	   
 		$.ajax({
@@ -246,7 +287,72 @@
 	 
 	    $( "#naujas_irasas" ).button().on( "click", function() {
 	      dialog.dialog( "open" );
-	    });	   
+	    });	  
+	    
+	  dialog = $( "#parduoti-form" ).dialog({
+    
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Išsaugoti": function() {
+        
+        	if ( addKurinys() ) {
+        	
+        		alert ( $('#pav').val() );
+        	
+        		form.submit();
+        	}
+        },
+        "Atšaukti": function() {
+        
+         form[ 0 ].reset();       
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+
+        allFields.removeClass( "ui-state-error" );
+      }
+    });
+ 
+    form = dialog.find( "form" );
+ 
+    $( "#naujas_irasas" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+    
+	$( '.edit' ).each( function () {
+    
+    	$( this ).click( function() {
+    
+	    	id= $( this ).parent().parent().data( 'idx' );
+	    	
+	    	alert ( id );
+	     
+	   		$.ajax({
+		
+				url: "http://localhost:8080/ajax/kurinys?id=" + id
+								
+			}).done( 
+			
+				function ( kurinys ) {
+				
+					console.log ( kurinys ); 
+				
+					$( '#idr' ).val( kurinys.id  )		
+					$( '#pav' ).val( kurinys.pav )
+					$( '#technika' ).val( kurinys.technika )		
+					$( '#rusis' ).val( kurinys.rusis )	
+					$( '#metai_sukurimo' ).val ( kurinys.metai_sukurimo );
+					$( '#kaina' ).val (kurinys.kaina)				
+					$ ('#irasas' ).val ( 'pakeisti' ); 	
+					dialog.dialog( "open" );					
+				}
+			);
+		}); 
+    }); 
 		   
   });
   </script>
@@ -280,12 +386,14 @@
 		<label for="metai_sukurimo">Metai sukūrimo</label>		
 		<input type="text" name="metai_sukurimo">				
 		<input type="submit" name="irasas" value="papildyti">
+		<input type="hidden" name="irasas" id="irasas" value="parduoti">
 		
 		<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
 	</form>
 	</div>
 	<table>
-		<tr>	
+		<tr>
+			<th>Veiksmai</th>	
 			<th>Laikytojas</th>
 			<th>Menininkas</th>
 			<th>Pavadinimas</th>
@@ -293,7 +401,10 @@
 			<th>Technika</th>
 			<th>Kaina</th>			
 		</tr>
-		<tr th:each="kurinys : ${kuriniai}">
+		<tr th:each="kurinys : ${kuriniai}"  data-th-data-idx="${kurinys.getId()}">
+			<td>
+			<input type="button" class="tr1 edit" value="redaguoti">
+			</td>
 			<td th:text="${kurinys.getLaikytojai()} ? ${kurinys.getLaikytojai().getPav()} : 'x' "></td>
 			<td th:text="${kurinys.getMenininkai()} ? ${kurinys.getMenininkai().getPav()} : '' "></td>
 			<td th:text="${kurinys.getPav()}"></td>	

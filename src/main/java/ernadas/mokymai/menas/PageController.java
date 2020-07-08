@@ -221,6 +221,11 @@ public class PageController {
 			 			kuriniai_repository.save( kurinys );
 			 		}
 			 		
+			 		if (irasas.contentEquals("parduoti")) {
+			 			
+			 			kuriniai_repository.save(kurinys);
+			 		}
+			 		
 			 	}
 		 
 		 	model.addAttribute("kuriniai", kuriniai_repository.findAll() );
