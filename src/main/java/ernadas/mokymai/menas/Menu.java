@@ -8,7 +8,7 @@ package ernadas.mokymai.menas;
  */
 public enum Menu {
 
-	Pradžia("/")
+	Pradžia("/apie")
 	, Menininkai("/menininkai")
 	, Laikytojai("/laikytojai")
 	, Kūriniai("/kuriniai");

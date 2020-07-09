@@ -21,8 +21,17 @@ public class PageController {
 	private KuriniaiRepository kuriniai_repository;
 	
 	@Autowired 
-	EntityManagerFactory  emf;		
+	EntityManagerFactory  emf;	
 	
+	 @RequestMapping("/apie")	
+	 	public String apie (
+			Model model
+			) { 
+	 
+		 model.addAttribute("lst_menu", Menu.values() ); 
+		 return "apie";
+	}
+	 
 	 @RequestMapping("/menininkai")
 	    public String menininkai(
 	    		@RequestParam(required=false) String id_men	    		

@@ -9,20 +9,29 @@
 		h3 {
 	 		text-align:center;
 		}
+		
 		table {
 			text-align:center;
 			clear: both;
+			width: 800px;
+			-webkit-box-shadow: 5px 5px 5px 0px #000000
+			, inset 4px 4px 15px 0px #000000
+			, 5px 5px 15px 5px rgba(0,0,0,0); 
+			box-shadow: 5px 5px 5px 0px #000000
+			, inset 4px 4px 15px 0px #000000
+			, 5px 5px 15px 5px rgba(0,0,0,0);
 		}
 		th {
-			background-color: Chocolate;
+			background-color: #FFC300;
+			height: 50px;
 		}
 		nav a {
 			display: inline-block;
 			padding: 12px;
 			margin: 12px;
 			text-decoration: none;
-			color: Brown;
-			background-color: Aquamarine;
+			color: Black;
+			background-color: #CAB85C;
 			-webkit-border-radius: 8px;
 			-moz-border-radius: 8px;
 			border-radius: 8px;		
@@ -32,13 +41,44 @@
 		}
 		nav a:hover {
 			text-decoration: underline;	
-			background-color: Aqua;	
+			background-color: #E3F392;	
 		}
 		form {
 			
 			width: 600px;
 		}
+		
+		.button {
+		
+			width: 100px;
+		}
 
+		input, textarea, label {
+		
+			width: 50%;
+			padding: 7px;
+			margin: 7px;
+		}
+		
+		input[type=submit] {
+		
+			width: 40%;
+			float: right;
+			margin-right: 23px;
+		}				
+		
+		input {
+		
+			-webkit-border-radius: 7px;
+			-moz-border-radius: 7px;
+			border-radius: 7px;	
+		}
+		
+		body {
+		
+		background-color: #F4F6F6; 
+		text-align:center;
+		}	
 	</style>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
