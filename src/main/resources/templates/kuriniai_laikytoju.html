@@ -213,12 +213,13 @@
 					$( '#technika' ).val( kurinys.technika )		
 					$( '#metai_sukurimo' ).val( kurinys.metaiSukurimo)
 					$( '#rusis' ).val( kurinys.rusis )					
-					$( '#kaina' ).val ( kurinys.kaina );
 					
 					if ( kurinys.laikytojai ) {
 								
 						$( '#laikytojas' ).val ( kurinys.laikytojai.pav ); 
 						$( '#id_laikytojas' ).val ( kurinys.id_laikytojai );
+						$( '#kaina' ).val ( kurinys.kaina );
+						$( '#data_nuo').val (kurinys.data_nuo);
 					}
 					$( '#irasas' ).val ( 'parduoti' );
 					dialog.dialog( "open" );											
@@ -250,7 +251,9 @@
 		<label for="valstybe">Metai sukūrimo</label>		
 		<input disabled type="text" id="metai_sukurimo">
 		<label for="valstybe">Kaina</label>		
-		<input disabled type="text" id="kaina">
+		<input type="text" id="kaina" name="kaina">
+		<label for="valstybe">Data nuo</label>		
+		<input type="text" id="data_nuo" name="data_nuo">
 		<label for="valstybe">Menininkas</label>
 		<input disabled type="text" id="menininkas">			
 		<input type="hidden" id="idx" name="idx" value="0">		

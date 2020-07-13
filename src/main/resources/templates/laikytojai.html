@@ -6,6 +6,15 @@
 	  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	  <link rel="stylesheet" href="jqueryui.css">
 	<style>
+	.ui-dialog, .ui-dialog-content {
+		background-color: #F4F6F6 !important;
+		color: black;
+	}
+	
+	.ui-dialog-titlebar {
+		background-image: none;  /** change css properties to match your theme*/
+ 		background-color: #FFC300;
+	}
 	h3 {
 	 		text-align:center;
 		}
@@ -44,12 +53,6 @@
 			background-color: #E3F392;	
 		}
 		
-		dialog {
-		
-		background-color: #F4F6F6;
-		width: 900px;
-		}
-		
 		.button {
 		
 			width: 10px;
@@ -57,7 +60,7 @@
 
 		input, textarea, label {
 		
-			width: 100%;
+			width: 70%;
 			padding: 7px;
 			margin: 7px;
 		}

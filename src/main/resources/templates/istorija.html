@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Menas - menininkai </title>
+	<style>
+		h3 {
+	 		text-align:center;
+		}
+		
+		table.center {
+			text-align:center;
+			clear: both;
+			margin-left:auto; 
+   			margin-right:auto;
+			
+			-webkit-box-shadow: 5px 5px 5px 0px #000000
+			, inset 4px 4px 15px 0px #000000
+			, 5px 5px 15px 5px rgba(0,0,0,0); 
+			box-shadow: 5px 5px 5px 0px #000000
+			, inset 4px 4px 15px 0px #000000
+			, 5px 5px 15px 5px rgba(0,0,0,0);
+		}
+		th {
+			background-color: #FFC300;
+			height: 50px;
+		}
+		nav a {
+			display: inline-block;
+			padding: 12px;
+			margin: 12px;
+			text-decoration: none;
+			color: Black;
+			background-color: #CAB85C;
+			-webkit-border-radius: 8px;
+			-moz-border-radius: 8px;
+			border-radius: 8px;		
+			-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+			-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+			box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);		
+		}
+		nav a:hover {
+			text-decoration: underline;	
+			background-color: #E3F392;	
+		}
+		
+		form {
+			
+			width: 600px;
+		}
+		
+		.button {
+		
+			width: 100px;
+		}
+
+		input, textarea, label {
+		
+			width: 70%;
+			padding: 7px;
+			margin: 7px;
+		}
+		
+		input[type=submit] {
+		
+			width: 40%;
+			float: right;
+			margin-right: 23px;
+		}				
+		
+		input {
+		
+			-webkit-border-radius: 7px;
+			-moz-border-radius: 7px;
+			border-radius: 7px;	
+		}
+		
+		body {
+		
+		background-color: #F4F6F6; 
+		text-align:center;
+		}	
+	</style>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+</head>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+      
+    $( '.istorija' ).each( function () {
+    
+    	$( this ).click( function() {
+    
+	    	id= $( this ).parent().parent().data( 'idx' );
+	    	
+	    	alert ( id );
+	     
+	   		$.ajax({
+		
+				url: "http://localhost:8080/ajax/istorija?id=" + id
+								
+			}).done( 
+			
+				function ( istorija ) {
+				
+					console.log ( istorija ); 
+				
+					$( '#idr' ).val( istorija.id  )		
+					$( '#id_kuriniai' ).val( istorija.id_kuriniai );
+					$( '#id_laikytojo' ).val( istorija.id_laikytojo );		
+					$( '#data_nuo' ).val( istorija.data_nuo );	
+					$( '#kaina' ).val (istorija.kaina );				
+					$ ('#irasas' ).val ( 'istorija' ); 	
+					dialog.dialog( "open" );					
+				}
+			);
+		}); 
+    }); 
+  
+  });
+  </script>	
+</head>
+<body>
+	<nav>
+		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
+	</nav>
+
+	<h3> Laikytojo kūriniai </h3>
+	<div style="width: 40%; margin 10px auto 10px auto">
+	<div id="parduoti-form" class='ui-front' title="Parduoti">
+	<form id="parduoti_kuriny" method="post" action=" ">
+		<label for="pav">Pavadinimas</label>
+		<input disabled type="text" id="pav">
+		<label for="pav">Laikytojas</label>
+		<input type="text" id="laikytojas" name="laikytojas">	
+		<input type="hidden" id="id_laikytojas" name="id_laikytojas">	
+		<label for="miestas">Technika</label>
+		<input disabled type="text" id="technika">
+		<label for="meno_kryptis">Rūšis</label>		
+		<input disabled type="text" id="rusis">
+		<label for="valstybe">Metai sukūrimo</label>		
+		<input disabled type="text" id="metai_sukurimo">
+		<label for="valstybe">Kaina</label>		
+		<input type="text" id="kaina" name="kaina">
+		<label for="valstybe">Menininkas</label>
+		<input disabled type="text" id="menininkas">			
+		<input type="hidden" id="idx" name="idx" value="0">		
+		<input type="hidden" id="irasas" name="irasas" value="papildyti">
+		
+			
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">						
+	</form>
+	</div>
+	<table>
+		<tr>
+					$( '#id' ).val( istorija.id  )		
+					$( '#id_kuriniai' ).val( istorija.id_kuriniai );
+					$( '#id_laikytojo' ).val( istorija.id_laikytojo );		
+					$( '#data_nuo' ).val( istorija.data_nuo );	
+					$( '#kaina' ).val (istorija.kaina );				
+					$ ('#irasas' ).val ( 'istorija' ); 	
+					
+			<th>Veiksmai</th>	
+			<th>Kurinys</th> 
+			<th>Laikytojas</th>
+			<th>Data nuo</th>
+			<th>Kaina</th>
+		
+		</tr>
+		<tr th:each="istorijos : ${istorija}" data-th-data-idx="${istorijos.getId()}">
+			<td th:text="${istorijos.getId()}">	
+			<td th:text="${istorijos.getMenininkai()} ? ${istorijos.getKuriniai().getPav()} : 'x' "></td>
+			<td th:text="${istorijos.getLaikytojai()} ? ${istorijos.getLaikytojai().getPav()} : 'x' "></td>	>	
+			<td th:text="${istorijos.getData_nuo()}"></td>
+			<td th:text="${istorijos.getKaina()}"></td>
+											
+		</tr>
+	</table>					
+</body>
+</html>

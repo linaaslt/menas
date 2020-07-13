@@ -26,6 +26,9 @@ public class AjaxController {
 	@Autowired
 	private KuriniaiRepository kuriniai_repository;
 	
+	@Autowired
+	private IstorijaRepository istorija_repository;
+	
 	
 	@GetMapping(path="/lst-kuriniai")
 	public @ResponseBody Iterable<Kuriniai> getAllKuriniai() {
@@ -100,4 +103,31 @@ public class AjaxController {
 		
 		return laikytojai1;
 	}	
+	
+	@GetMapping(path="/lst-istorija")
+	public @ResponseBody Iterable<Istorija> getAllIstorija() {
+		// This returns a JSON or XML with the users
+		return istorija_repository.findAll();
+	}
+	
+	@GetMapping(path="/istorija")
+	public @ResponseBody Istorija getIstorija1(
+			
+    		@RequestParam(required=true) Integer id
+			) {
+		// This returns a JSON or XML with the users
+		Optional<Istorija> op_men = istorija_repository.findById( id );
+		
+		Istorija istorija1 = new Istorija();
+		
+		if ( op_men.isPresent() ) {
+			
+			istorija1 = op_men.get(); 
+		}
+		
+		System.out.println( istorija1.toString() );
+		
+		return istorija1;
+	}	
+
 }

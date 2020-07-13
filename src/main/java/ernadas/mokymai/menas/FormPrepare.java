@@ -13,7 +13,8 @@ public class FormPrepare {
 		}
 		
 		return val;
-	}	
+	}
+	
 	
 	public static Double doubleOrNull ( String from ) {
 		
@@ -40,5 +41,14 @@ public class FormPrepare {
 		
 		return val;
 	}	
+	
+	public static String DataIsEil ( String datos_eil ) {
+		
+		// https://www.javatpoint.com/java-get-current-date
+ 		// DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+	 	//  LocalDateTime now = LocalDateTime.now(); 
+		
+		return datos_eil;
+	}
 
 }
