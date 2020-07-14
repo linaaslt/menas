@@ -7,8 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 
 	public interface IstorijaRepository extends CrudRepository<Istorija, Integer> {
 	
-		@Query(value = "SELECT * FROM kuriniai WHERE id_laikytojai = ?1", nativeQuery = true)
-		List<Istorija> findByIdLaikytojai(Integer id );
+		@Query(value = "SELECT * FROM istorija WHERE id_kuriniai = ?1", nativeQuery = true)
+		List<Istorija> findByIdKuriniai(Integer id );
 	}
 	
 

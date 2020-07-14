@@ -145,7 +145,7 @@
 				avail_kuriniai = data_kuriniai;
 				
 				 // alert ( 'po: ' + JSON.stringify ( avail_kuriniai ) );
-				
+				/*
 				   $( "#kurinys" ).autocomplete({
 				   
 				      minLength: 0,
@@ -167,7 +167,8 @@
 				      return $( "<li>" )
 				        .append( "<div>" + item.pav + "</div>" )
 				        .appendTo( ul );
-				    };				
+				    };	
+				*/	
 			}
 		);	   
 	   
@@ -312,33 +313,33 @@
 	      dialog.dialog( "open" );
 	    });	  
 	    
-	  dialog = $( "#parduoti-form" ).dialog({
+	dialog = $( "#parduoti-form" ).dialog({
     
-      autoOpen: false,
-      height: 400,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Išsaugoti": function() {
-        
-        	if ( addKurinys() ) {
-        	
-        		alert ( $('#pav').val() );
-        	
-        		form.submit();
-        	}
-        },
-        "Atšaukti": function() {
-        
-         form[ 0 ].reset();       
-          dialog.dialog( "close" );
-        }
-      },
-      close: function() {
+		      autoOpen: false,
+		      height: 400,
+		      width: 350,
+		      modal: true,
+		      buttons: {
+			"Išsaugoti": function() {
+			
+				if ( addKurinys() ) {
+				
+					alert ( $('#pav').val() );
+				
+					form.submit();
+				}
+			},
+			"Atšaukti": function() {
+			
+			 form[ 0 ].reset();       
+			  dialog.dialog( "close" );
+			}
+		      },
+		      close: function() {
 
-        allFields.removeClass( "ui-state-error" );
-      }
-    });
+			allFields.removeClass( "ui-state-error" );
+		      }
+	});
  
     form = dialog.find( "form" );
  
@@ -376,14 +377,14 @@
 			);
 		}); 
     }); 
-    
+    /*
     $( '.istorija' ).each( function () {
     
     	$( this ).click( function() {
     
 	    	id= $( this ).parent().parent().data( 'idx' );
 	    	
-	    	alert ( id );
+	    	
 	     
 	   		$.ajax({
 		
@@ -395,18 +396,17 @@
 				
 					console.log ( istorija ); 
 				
-					$( '#idr' ).val( istorija.id  )		
+					$( '#id' ).val( istorija.id  )		
 					$( '#id_kuriniai' ).val( istorija.id_kuriniai );
-					$( '#id_laikytojo' ).val( istorija.id_laikytojo );		
+					$( '#id_laikytojai' ).val( istorija.id_laikytojai );		
 					$( '#data_nuo' ).val( istorija.data_nuo );	
 					$( '#kaina' ).val (istorija.kaina );				
 					$ ('#irasas' ).val ( 'istorija' ); 	
 					dialog.dialog( "open" );					
 				}
 			);
-		}); 
-    }); 
-		   
+		});  
+	});	*/   
   });
   </script>
 <body>
@@ -457,7 +457,7 @@
 		<tr th:each="kurinys : ${kuriniai}"  data-th-data-idx="${kurinys.getId()}">
 			<td>
 			<input type="button" class="tr1 edit" value="redaguoti">
-			<input type="button" class="tr1 istorija" value="istorija">
+			<a th:href="@{/istorija(id=${kurinys.getId()})}">istorija</a>
 			</td>
 			<td th:text="${kurinys.getLaikytojai()} ? ${kurinys.getLaikytojai().getPav()} : 'x' "></td>
 			<td th:text="${kurinys.getMenininkai()} ? ${kurinys.getMenininkai().getPav()} : '' "></td>

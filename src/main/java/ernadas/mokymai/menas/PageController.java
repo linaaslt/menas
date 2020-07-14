@@ -134,8 +134,7 @@ public class PageController {
 						 		Istorija istorija = new Istorija ( id_kurinio, FormPrepare.takeId( id_laikytojas ), data_nuo, FormPrepare.integerOrNull( kaina ) );
 						 			
 						 			istorija_repository.save(istorija);
-						 			
-						 				
+						 									 				
 				 		}
 				 }
 		 	}
@@ -230,20 +229,15 @@ public class PageController {
 	        model.addAttribute ( "lst_menu", Menu.values() );  
 	        return "kuriniai";
 	 }
-	/* 
+	
 	 @RequestMapping("/istorija")
 	 public String Istorija(
 	    		@RequestParam(required=false) String id	    		
-	    		, @RequestParam(required=false) String id_kuriniai
-	    		, @RequestParam(required=false) String id_laikytojai
-	    		, @RequestParam(required=false) String nuo_kada	    		
-	    		, @RequestParam(required=false) String kaina
-	    		, @RequestParam(required=false) String irasas
 	    		, Model model 
 	    	) {
 		 
 		 	model.addAttribute ( "istorija", istorija_repository.findByIdKuriniai( FormPrepare.takeId ( id ) ) );
 	        model.addAttribute ( "lst_menu", Menu.values() );  
 	        return "istorija";
-	 }*/
+	 }
 }

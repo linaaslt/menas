@@ -87,38 +87,7 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-      
-    $( '.istorija' ).each( function () {
-    
-    	$( this ).click( function() {
-    
-	    	id= $( this ).parent().parent().data( 'idx' );
-	    	
-	    	alert ( id );
-	     
-	   		$.ajax({
-		
-				url: "http://localhost:8080/ajax/istorija?id=" + id
-								
-			}).done( 
-			
-				function ( istorija ) {
-				
-					console.log ( istorija ); 
-				
-					$( '#idr' ).val( istorija.id  )		
-					$( '#id_kuriniai' ).val( istorija.id_kuriniai );
-					$( '#id_laikytojo' ).val( istorija.id_laikytojo );		
-					$( '#data_nuo' ).val( istorija.data_nuo );	
-					$( '#kaina' ).val (istorija.kaina );				
-					$ ('#irasas' ).val ( 'istorija' ); 	
-					dialog.dialog( "open" );					
-				}
-			);
-		}); 
-    }); 
-  
-  });
+   
   </script>	
 </head>
 <body>
@@ -126,55 +95,22 @@
 		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
 	</nav>
 
-	<h3> Laikytojo kūriniai </h3>
+	<h3> Kūrinio istorija </h3>
 	<div style="width: 40%; margin 10px auto 10px auto">
-	<div id="parduoti-form" class='ui-front' title="Parduoti">
-	<form id="parduoti_kuriny" method="post" action=" ">
-		<label for="pav">Pavadinimas</label>
-		<input disabled type="text" id="pav">
-		<label for="pav">Laikytojas</label>
-		<input type="text" id="laikytojas" name="laikytojas">	
-		<input type="hidden" id="id_laikytojas" name="id_laikytojas">	
-		<label for="miestas">Technika</label>
-		<input disabled type="text" id="technika">
-		<label for="meno_kryptis">Rūšis</label>		
-		<input disabled type="text" id="rusis">
-		<label for="valstybe">Metai sukūrimo</label>		
-		<input disabled type="text" id="metai_sukurimo">
-		<label for="valstybe">Kaina</label>		
-		<input type="text" id="kaina" name="kaina">
-		<label for="valstybe">Menininkas</label>
-		<input disabled type="text" id="menininkas">			
-		<input type="hidden" id="idx" name="idx" value="0">		
-		<input type="hidden" id="irasas" name="irasas" value="papildyti">
-		
-			
-      <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">						
-	</form>
 	</div>
 	<table>
-		<tr>
-					$( '#id' ).val( istorija.id  )		
-					$( '#id_kuriniai' ).val( istorija.id_kuriniai );
-					$( '#id_laikytojo' ).val( istorija.id_laikytojo );		
-					$( '#data_nuo' ).val( istorija.data_nuo );	
-					$( '#kaina' ).val (istorija.kaina );				
-					$ ('#irasas' ).val ( 'istorija' ); 	
-					
-			<th>Veiksmai</th>	
-			<th>Kurinys</th> 
+		<tr> 	
+						
 			<th>Laikytojas</th>
 			<th>Data nuo</th>
 			<th>Kaina</th>
 		
 		</tr>
-		<tr th:each="istorijos : ${istorija}" data-th-data-idx="${istorijos.getId()}">
-			<td th:text="${istorijos.getId()}">	
-			<td th:text="${istorijos.getMenininkai()} ? ${istorijos.getKuriniai().getPav()} : 'x' "></td>
-			<td th:text="${istorijos.getLaikytojai()} ? ${istorijos.getLaikytojai().getPav()} : 'x' "></td>	>	
-			<td th:text="${istorijos.getData_nuo()}"></td>
-			<td th:text="${istorijos.getKaina()}"></td>
+		<tr th:each="istorija1 : ${istorija}" data-th-data-idx="${istorija1.getId()}">
+						
+			<td th:text="${istorija1.getLaikytojai()} ? ${istorija1.getLaikytojai().getPav()} : 'x' "></td>	
+			<td th:text="${istorija1.getData_nuo()}"></td>	
+			<td th:text="${istorija1.getKaina()}"></td>	
 											
 		</tr>
 	</table>					

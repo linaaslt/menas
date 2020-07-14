@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Istorija {
@@ -16,6 +18,10 @@ public class Istorija {
 	 private Integer id_laikytojo;
 	 private String data_nuo;
 	 private Integer kaina;
+	 
+	 @ManyToOne // (fetch = FetchType.LAZY)
+	    @JoinColumn(insertable=false, updatable=false,name="id_laikytojo")
+		private Laikytojai laikytojai;
 	
 	 public Istorija (Integer id_kuriniai, Integer id_laikytojo, String data_nuo, Integer kaina ) {
 		 super() ;
@@ -25,6 +31,14 @@ public class Istorija {
 		 this.kaina = kaina;
 	 }
 	 
+	public Laikytojai getLaikytojai() {
+		return laikytojai;
+	}
+
+	public void setLaikytojai(Laikytojai laikytojai) {
+		this.laikytojai = laikytojai;
+	}
+
 	public Istorija () {
 		super();
 	}
