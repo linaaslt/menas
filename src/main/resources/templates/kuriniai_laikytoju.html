@@ -275,7 +275,7 @@
 			<th>Laikytojas</th>
 			<th>Menininkas</th>			
 		</tr>
-		<tr th:each="kurinys : ${kuriniai}" data-th-data-idx="${kurinys.getId()}">
+		<tr th:each="kurinys : ${laikytojas.get().getKuriniai()}" data-th-data-idx="${kurinys.getId()}">
 			<td>
 				<!--a th:href=>peržiūra</a-->
 				<input type="button" class="tr1 sell" value="Parduoti">			

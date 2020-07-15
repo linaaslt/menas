@@ -1,9 +1,13 @@
 package ernadas.mokymai.menas;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Laikytojai {
@@ -16,6 +20,10 @@ public class Laikytojai {
 	 private String valstybe;
 	 private String kryptis_meno;
 	 private String miestas;
+	 
+	 @OneToMany // (fetch = FetchType.LAZY)
+	    @JoinColumn(insertable=false, updatable=false,name="id_laikytojai")    
+	    private List<Kuriniai> kuriniai;
 	 	 
 	 public Laikytojai (Integer id, String pav,String valstybe, String kryptis_meno, String miestas ) {
 		 super();
@@ -76,4 +84,13 @@ public class Laikytojai {
 	public void setValstybe(String valstybe) {
 		this.valstybe = valstybe;
 	}
+
+	public List<Kuriniai> getKuriniai() {
+		return kuriniai;
+	}
+
+	public void setKuriniai(List<Kuriniai> kuriniai) {
+		this.kuriniai = kuriniai;
+	}
+	
 }

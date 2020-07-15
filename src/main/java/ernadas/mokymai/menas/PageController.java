@@ -140,7 +140,7 @@ public class PageController {
 		 	}
 		 	model.addAttribute( "lst_menu", Menu.values() );
 		 	model.addAttribute( "laikytojas", laikytojai_repository.findById( FormPrepare.takeId ( id ) ) );
-		 	model.addAttribute( "kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.integerOrNull ( id ) ) );
+		 	//model.addAttribute( "kuriniai", kuriniai_repository.findByIdLaikytojai( FormPrepare.integerOrNull ( id ) ) );
 		 	return "kuriniai_laikytoju";
 	 }
 	 
@@ -180,7 +180,7 @@ public class PageController {
 			 		
 			 	}
 		 
-		 	model.addAttribute ( "kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.takeId ( id )/*, emf */ ) );
+		 	// model.addAttribute ( "kuriniai", kuriniai_repository.findByIdMenininkai( FormPrepare.takeId ( id )/*, emf */ ) );
 		 	model.addAttribute( "menininkas", menininkai_repository.findById( FormPrepare.takeId ( id ) ) );
 	        model.addAttribute ( "lst_menu", Menu.values() );  
 	        return "kuriniai_menininko";

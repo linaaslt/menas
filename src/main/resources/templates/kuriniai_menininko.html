@@ -271,7 +271,7 @@
 			<th>Technika</th>
 			<th>Kaina</th>			
 		</tr>
-		<tr th:each="kurinys : ${kuriniai}">
+		<tr th:each="kurinys : ${menininkas.get().getKuriniai()}">
 			<td>
 				<input type="button" class="tr1 edit" value="redaguoti">
 				<!-- a th:href="@{/kurinys(id=${kurinys.getId()})}">parduoti</a -->				
