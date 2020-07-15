@@ -95,7 +95,7 @@
 		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
 	</nav>
 
-	<h3> Kūrinio istorija </h3>
+	<h3> Kūrinio <span th:text="${kurinys.isPresent()} ? ${kurinys.get().getPav()} : '???' "></span> istorija </h3>
 	<div style="width: 40%; margin 10px auto 10px auto">
 	</div>
 	<table>

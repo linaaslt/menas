@@ -235,7 +235,7 @@
 		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
 	</nav>
 
-	<h3> Laikytojo kūriniai </h3>
+	<h3> Laikytojo: <span th:text="${laikytojas.isPresent()} ? ${laikytojas.get().getPav()} : '???' "></span> kūriniai </h3>
 	<div style="width: 40%; margin 10px auto 10px auto">
 	<div id="parduoti-form" class='ui-front' title="Parduoti">
 	<form id="parduoti_kuriny" method="post" action=" ">

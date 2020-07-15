@@ -235,7 +235,7 @@
 		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
 	</nav>
 
-	<h3> Kūrniniai </h3>
+	<h3><span th:text="${menininkas.isPresent()} ? ${menininkas.get().getPav()} : '???' "></span> kūrniniai </h3>
 	<div style="width: 10%; margin 10px auto 10px auto">
 	<input type="button" id="naujas_irasas" value="papildyti">
 	<div id="dialog-form" class='ui-front' title="Kūrinys">
